@@ -1,0 +1,627 @@
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --surface-2: #efede7;
+  --text: #1b1d22;
+  --muted: #646873;
+  --border: #dedbd2;
+  --accent: #0b7a75;
+  --accent-soft: #d9efed;
+  --accent-text: #ffffff;
+  --ts: #2f6fd6;
+  --js: #b88a00;
+  --danger: #c2372d;
+  --danger-soft: #fbe5e3;
+  --ok: #2a8a4a;
+  --ok-soft: #e1f3e7;
+  --radius: 10px;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121418;
+    --surface: #1a1d23;
+    --surface-2: #232730;
+    --text: #e8e9ec;
+    --muted: #9aa0ab;
+    --border: #2e333d;
+    --accent: #3cc4bc;
+    --accent-soft: #163a39;
+    --accent-text: #08201f;
+    --ts: #6da0ff;
+    --js: #e7c34a;
+    --danger: #ff7a6e;
+    --danger-soft: #3a1d1b;
+    --ok: #5fd28a;
+    --ok-soft: #173123;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--accent);
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+:not(pre) > code {
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 5px;
+}
+
+/* ---------- Szkielet ---------- */
+.site-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-mark {
+  font-family: var(--mono);
+  background: var(--accent);
+  color: var(--accent-text);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 0.85rem;
+}
+.site-tagline {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.site-main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.hero h1 {
+  margin: 0 0 6px;
+  font-size: 2rem;
+}
+.hero p {
+  margin: 0 0 24px;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ---------- Wyszukiwarka ---------- */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-box input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  padding: 14px 48px 14px 46px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+.search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.search-icon {
+  position: absolute;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.search-kbd {
+  position: absolute;
+  right: 14px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0 7px;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin: 14px 0 10px;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 2px;
+}
+.chip {
+  font: inherit;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 3px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.chip.is-selected {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.tag-button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.tag-button:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.results-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 10px;
+}
+.results-meta .hint {
+  opacity: 0.8;
+}
+@media (max-width: 600px) {
+  .results-meta .hint {
+    display: none;
+  }
+}
+
+/* ---------- Lista ćwiczeń ---------- */
+.exercise-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.exercise-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.12s, transform 0.12s;
+}
+.exercise-card.is-active,
+.exercise-card:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+.exercise-card.is-done {
+  opacity: 0.75;
+}
+.exercise-number {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.05rem;
+  padding-top: 1px;
+}
+.exercise-number.big {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+.exercise-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.exercise-title {
+  font-weight: 650;
+  font-size: 1.05rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.exercise-summary {
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+.exercise-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+.pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 7px;
+  background: var(--surface-2);
+}
+.pill-ts {
+  color: var(--ts);
+  border-color: currentColor;
+}
+.pill-js {
+  color: var(--js);
+  border-color: currentColor;
+}
+.done-badge {
+  font-size: 0.75rem;
+  color: var(--ok);
+  background: var(--ok-soft);
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+.empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+}
+.link-button {
+  font: inherit;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ---------- Strona ćwiczenia ---------- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 18px;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.exercise-header {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.exercise-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.7rem;
+  line-height: 1.25;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 22px 0 10px;
+}
+.button {
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+.button-done {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.file-hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 26px;
+}
+
+.prose {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 26px 18px;
+}
+.prose h2 {
+  font-size: 1.15rem;
+  margin: 26px 0 8px;
+}
+.prose ul {
+  padding-left: 22px;
+}
+.prose li {
+  margin: 4px 0;
+}
+.prose details {
+  border-top: 1px solid var(--border);
+  padding: 10px 0;
+}
+.prose details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.prose pre,
+.solution pre {
+  background: var(--surface-2);
+  padding: 14px 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  line-height: 1.45;
+}
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}
+.solution {
+  margin-top: 22px;
+  background: var(--surface);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+}
+.solution summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 34px;
+  font-size: 0.92rem;
+}
+.pager a {
+  text-decoration: none;
+}
+
+/* ---------- Plac zabaw ---------- */
+.play-page h1 {
+  margin: 0 0 14px;
+  font-size: 1.4rem;
+}
+.mode-switch {
+  display: inline-flex;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.mode-switch a {
+  padding: 6px 14px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.mode-switch a.is-selected {
+  background: var(--text);
+  color: var(--bg);
+}
+.play-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.play-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.play-file {
+  font-size: 0.78rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.timer-value {
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 5.2ch;
+  font-variant-numeric: tabular-nums;
+}
+.timer-bar {
+  width: 110px;
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.timer-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.timer.is-over .timer-value {
+  color: var(--danger);
+}
+.timer.is-over .timer-bar span {
+  background: var(--danger);
+}
+.stage-error {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.stage-error pre {
+  white-space: pre-wrap;
+}
+
+/* Scena, na której renderuje się Twoje ćwiczenie: bazowe style dla zwykłych elementów,
+   żeby nie tracić czasu na CSS w trakcie zadania. */
+.stage {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  min-height: 320px;
+}
+.stage input:not([type="checkbox"]):not([type="radio"]),
+.stage select,
+.stage textarea {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+.stage input:focus,
+.stage select:focus,
+.stage textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.stage button {
+  font: inherit;
+  padding: 7px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+.stage button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.stage button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+.stage ul,
+.stage ol {
+  padding-left: 0;
+  list-style: none;
+}
+.stage li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.stage mark {
+  background: var(--accent-soft);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+.stage .muted {
+  color: var(--muted);
+}
+.stage .error {
+  color: var(--danger);
+}
+.stage .row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.stage .stack {
+  display: grid;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .site-tagline {
+    display: none;
+  }
+  .prose {
+    padding: 4px 16px 14px;
+  }
+  .stage {
+    padding: 16px;
+  }
+  .exercise-number.big {
+    font-size: 1.6rem;
+  }
+}

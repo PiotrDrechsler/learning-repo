@@ -1,0 +1,9 @@
+{
+  "title": "Własny hook useFetch<T>",
+  "summary": "Generyczny hook do pobierania danych: status jako unia typów, anulowanie przy zmianie URL, refetch i obsługa 404.",
+  "level": "mid",
+  "lang": "ts",
+  "minutes": 30,
+  "tags": ["custom-hook", "generics", "fetch", "abortcontroller", "useEffect", "typescript"],
+  "added": "2026-10-27"
+}

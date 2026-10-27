@@ -1,0 +1,9 @@
+{
+  "title": "Lista zadań z filtrami i localStorage",
+  "summary": "Klasyczne todo, ale porządnie: niemutowalne aktualizacje, filtry jako stan pochodny, edycja w miejscu i zapis w localStorage.",
+  "level": "junior+",
+  "lang": "js",
+  "minutes": 25,
+  "tags": ["useState", "useReducer", "lista", "formularz", "localStorage", "stan-pochodny"],
+  "added": "2026-10-27"
+}

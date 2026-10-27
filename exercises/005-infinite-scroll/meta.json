@@ -1,0 +1,9 @@
+{
+  "title": "Infinite scroll z IntersectionObserver",
+  "summary": "Lista postów doładowywana przy dojściu do końca: bez duplikatów i podwójnych requestów, z obsługą końca listy i ponawianiem po błędzie.",
+  "level": "mid",
+  "lang": "js",
+  "minutes": 35,
+  "tags": ["intersectionobserver", "paginacja", "useRef", "useEffect", "fetch", "retry"],
+  "added": "2026-10-27"
+}

@@ -1,0 +1,9 @@
+{
+  "title": "Stoper z międzyczasami",
+  "summary": "Start, pauza, reset i międzyczasy. Pułapki: stale closure w setInterval, sprzątanie interwału i dryf czasu.",
+  "level": "junior+",
+  "lang": "ts",
+  "minutes": 20,
+  "tags": ["setInterval", "useRef", "stale-closure", "useEffect", "timer"],
+  "added": "2026-10-27"
+}
