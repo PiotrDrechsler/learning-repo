@@ -16,7 +16,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const t = getDictionary(locale);
 
   return (
-    <html lang={locale}>
+    // suppressHydrationWarning: wtyczki przeglądarki (np. LanguageTool, Grammarly) dopisują atrybuty do <html>
+    // przed startem Reacta. Wyciszamy to tylko dla tego jednego elementu, nie dla jego dzieci.
+    <html lang={locale} suppressHydrationWarning>
       <body>
         <I18nProvider locale={locale}>
           <header className="site-header">
