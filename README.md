@@ -44,6 +44,21 @@ Wcześniejsze, trudniejsze zadania (mid) są na gałęzi [`archiwum`](https://gi
 4. Po czasie porównaj z zakładką **Rozwiązanie** i przejdź przez pytania follow-up na głos.
 5. Oznacz zadanie jako zrobione (postęp zapisuje się w przeglądarce).
 
+## Gałęzie: main = puste zadania, gałąź = Twoje rozwiązanie
+
+Na `main` wszystkie zadania są w wersji startowej. Każde podejście do zadania robisz na osobnej gałęzi z datą rozpoczęcia:
+
+```bash
+npm run task -- 001          # tworzy i przełącza na: 001-todo-with-filters/RRRR-MM-DD
+# ... kodujesz ...
+git add -A
+git commit -m "001: moje rozwiązanie"
+git switch main              # wracasz do pustych zadań
+```
+
+Lista Twoich podejść: `git branch`. Powrót do starego podejścia: `git switch 001-todo-with-filters/2026-10-27`.
+Drugie podejście do tego samego zadania innego dnia dostanie nową gałąź z nową datą, więc możesz porównać postępy (`git diff gałąź1 gałąź2`).
+
 Reset zadania do wersji startowej:
 
 ```bash
@@ -52,7 +67,6 @@ git restore exercises/002-array-methods-cart/exercise.js
 git restore app/sandbox/004-task && git clean -fd app/sandbox/004-task
 ```
 
-Wskazówka: każde podejście rób na osobnej gałęzi (`git switch -c 002-podejscie-1`), wtedy zostaje historia Twoich rozwiązań.
 
 ## Język interfejsu (PL / EN)
 

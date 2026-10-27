@@ -12,7 +12,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "npm run registry && tsc --noEmit",
-    "typecheck:tasks": "tsc --noEmit -p tsconfig.check.json"
+    "typecheck:tasks": "tsc --noEmit -p tsconfig.check.json",
+    "task": "node scripts/task-branch.mjs"
   },
   "dependencies": {
     "marked": "^15.0.0",
