@@ -6,3 +6,6 @@ next-env.d.ts
 .DS_Store
 .env*.local
 npm-debug.log*
+
+# Generowany automatycznie przy npm run dev / build
+exercises/_registry.generated.ts
