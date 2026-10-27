@@ -74,6 +74,7 @@ const pl = {
   },
   editor: {
     label: "Edytor kodu",
+    task: "Treść zadania",
     save: "Zapisz",
     saving: "Zapisuję…",
     saved: "Zapisano ✓",
@@ -169,6 +170,7 @@ const en: Dictionary = {
   },
   editor: {
     label: "Code editor",
+    task: "Task",
     save: "Save",
     saving: "Saving…",
     saved: "Saved ✓",

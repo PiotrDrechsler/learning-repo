@@ -39,7 +39,10 @@ for (const folder of folders) {
     imports.push(`import * as Exercise${n} from "./${folder}/exercise";`);
     imports.push(`import * as Solution${n} from "./${folder}/solution";`);
     imports.push(`import Tests${n} from "./${folder}/tests";`);
-    suites.push(`  "${folder}": { exercise: Exercise${n}, solution: Solution${n}, tests: Tests${n} },`);
+    // preview.* (opcjonalny): wizualizacja, która korzysta z funkcji z exercise / solution
+    const preview = has(folder, "preview") ? `Preview${n}` : "null";
+    if (has(folder, "preview")) imports.push(`import Preview${n} from "./${folder}/preview";`);
+    suites.push(`  "${folder}": { exercise: Exercise${n}, solution: Solution${n}, tests: Tests${n}, preview: ${preview} },`);
     continue;
   }
 
@@ -61,7 +64,10 @@ export const components: Record<string, { Exercise: ComponentType; Solution: Com
 ${components.join("\n")}
 };
 
-export const suites: Record<string, { exercise: unknown; solution: unknown; tests: TestCase[] }> = {
+export const suites: Record<
+  string,
+  { exercise: unknown; solution: unknown; tests: TestCase[]; preview: ComponentType<{ impl: any }> | null }
+> = {
 ${suites.join("\n")}
 };
 `;

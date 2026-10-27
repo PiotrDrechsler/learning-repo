@@ -139,6 +139,7 @@ export function TestPlayground({
     );
   }
 
+  const Preview = suite.preview;
   const passed = results?.filter((r) => r.ok).length ?? 0;
   const total = suite.tests.length;
 
@@ -153,6 +154,13 @@ export function TestPlayground({
           </button>
         </div>
       </div>
+      {Preview && (
+        <div className="stage pv-stage">
+          <ErrorBoundary key={`preview-${mode}-${runId}`} crashedLabel={t.play.crashed} retryLabel={t.play.tryAgain}>
+            <Preview impl={impl} />
+          </ErrorBoundary>
+        </div>
+      )}
       <div className="stage">
         {results === null ? (
           <p className="muted">{t.tests.running}</p>

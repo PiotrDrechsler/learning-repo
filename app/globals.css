@@ -750,17 +750,73 @@ pre {
 
 /* ---------- Edytor + podgląd (plac zabaw) ---------- */
 .site-main:has(.play-page) {
-  max-width: 1480px;
+  max-width: 1900px;
 }
+/* Szeroki ekran: treść | edytor | podgląd. Średni: treść nad edytorem i podglądem. Wąski: wszystko w kolumnie. */
 .workbench {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-areas: "task editor preview";
   gap: 16px;
   align-items: start;
+}
+.workbench > .task-panel {
+  grid-area: task;
+}
+.workbench > .editor {
+  grid-area: editor;
+}
+.workbench > .workbench-preview {
+  grid-area: preview;
+}
+.task-panel {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+}
+.task-panel > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 700;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.task-prose {
+  border: 0;
+  border-radius: 0;
+  padding: 2px 16px 12px;
+  font-size: 0.9rem;
+}
+.task-prose h2 {
+  font-size: 1rem;
+  margin: 18px 0 6px;
+}
+.task-prose pre {
+  font-size: 0.8rem;
+}
+@media (max-width: 1400px) {
+  .workbench {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "task task"
+      "editor preview";
+  }
+  .task-panel {
+    position: static;
+    max-height: 340px;
+  }
 }
 @media (max-width: 1000px) {
   .workbench {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "task" "editor" "preview";
   }
 }
 .workbench-preview {
@@ -886,4 +942,149 @@ pre {
   .editor-body {
     height: 420px;
   }
+}
+
+/* ---------- Wizualizacje zadań JavaScript / TypeScript ---------- */
+.pv-stage {
+  margin-bottom: 12px;
+  min-height: 0;
+}
+.pv {
+  display: grid;
+  gap: 12px;
+}
+.pv-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.pv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.pv-table th,
+.pv-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.pv-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.stage .pv-table button {
+  padding: 1px 8px;
+}
+.pv-highlight td {
+  background: var(--accent-soft);
+}
+.pv-badge {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  padding: 0 5px;
+}
+.pv-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 8px;
+}
+.pv-stat {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--bg);
+  min-width: 0;
+}
+.pv-fn {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+  background: none !important;
+  padding: 0 !important;
+}
+.pv-value {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.pv-chip {
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--surface-2);
+  border-radius: 99px;
+  padding: 1px 8px;
+}
+.pv-todo {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+.pv-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin: 0;
+}
+.pv-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+.pv-group ul {
+  margin: 4px 0 0;
+}
+.stage .pv-group li {
+  padding: 2px 0;
+  border: 0;
+  font-size: 0.85rem;
+}
+.pv-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+.pv-column {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-height: 120px;
+}
+.pv-status-new {
+  border-top-color: var(--ts);
+}
+.pv-status-paid {
+  border-top-color: var(--js);
+}
+.pv-status-shipped {
+  border-top-color: var(--ok);
+}
+.pv-status-cancelled {
+  border-top-color: var(--danger);
+}
+.pv-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
+.stage .pv-card button {
+  padding: 2px 8px;
+  font-size: 0.8rem;
 }

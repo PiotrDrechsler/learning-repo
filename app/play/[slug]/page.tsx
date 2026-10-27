@@ -38,6 +38,13 @@ export default async function PlayPage({ params, searchParams }: Props) {
         </Link>
       </div>
       <div className="workbench">
+        <details className="task-panel" open>
+          <summary>
+            📋 {t.editor.task}
+            <span className="muted"> · {exercise.minutes} min</span>
+          </summary>
+          <div className="prose task-prose" dangerouslySetInnerHTML={{ __html: exercise.readmeHtml }} />
+        </details>
         <CodeEditor
           key={showSolution ? "solution" : "exercise"}
           slug={slug}
