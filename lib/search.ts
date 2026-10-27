@@ -27,7 +27,8 @@ export function searchExercises(exercises: ExerciseMeta[], query: string): Searc
     const title = normalize(exercise.title);
     const tags = exercise.tags.map(normalize);
     const summary = normalize(exercise.searchText); // tytuły i opisy w obu językach
-    const extra = normalize(`${exercise.number} ${exercise.level} ${exercise.lang} ${exercise.slug}`);
+    const stackWords = exercise.stack === "nextjs" ? "nextjs next.js next app-router" : "react";
+    const extra = normalize(`${exercise.number} ${exercise.level} ${exercise.lang} ${stackWords} ${exercise.slug}`);
 
     let score = 0;
     let allMatched = true;

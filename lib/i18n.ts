@@ -29,6 +29,7 @@ const pl = {
   browser: {
     placeholder: "Szukaj: debounce, modal, hook, ts, mid…",
     searchLabel: "Szukaj ćwiczeń",
+    stack: "Technologia",
     lang: "Język",
     level: "Poziom",
     status: "Status",
@@ -48,6 +49,8 @@ const pl = {
     markDone: "Oznacz jako zrobione",
     isDone: "✓ Zrobione",
     fileHintBefore: "Kodujesz w pliku",
+    filesHint: "Kodujesz w plikach (zadanie Next.js, każdy plik to część trasy w app/sandbox):",
+    restoreHint: "Chcesz zacząć od zera?",
     fileHintMiddle: "Zapisz plik, a plac zabaw odświeży się sam. Chcesz zacząć od zera?",
     showSolution: "Pokaż przykładowe rozwiązanie (spoiler!)",
     runSolution: "Uruchom rozwiązanie na placu zabaw →",
@@ -65,6 +68,9 @@ const pl = {
     missingEnd: "(robi się samo przy",
     crashed: "Komponent rzucił błąd:",
     tryAgain: "Spróbuj ponownie",
+    reload: "↻ Przeładuj",
+    openNewTab: "Otwórz w nowej karcie ↗",
+    frameTitle: "Podgląd strony z zadaniem",
   },
   timer: {
     start: (minutes: number) => `▶ Start (${minutes} min)`,
@@ -93,6 +99,7 @@ const en: Dictionary = {
   browser: {
     placeholder: "Search: debounce, modal, hook, ts, mid…",
     searchLabel: "Search exercises",
+    stack: "Technology",
     lang: "Language",
     level: "Level",
     status: "Status",
@@ -112,6 +119,8 @@ const en: Dictionary = {
     markDone: "Mark as done",
     isDone: "✓ Done",
     fileHintBefore: "You code in",
+    filesHint: "You code in these files (a Next.js task, each file is part of a route in app/sandbox):",
+    restoreHint: "Want to start over?",
     fileHintMiddle: "Save the file and the playground reloads by itself. Want to start over?",
     showSolution: "Show a sample solution (spoiler!)",
     runSolution: "Run the solution in the playground →",
@@ -129,6 +138,9 @@ const en: Dictionary = {
     missingEnd: "(it runs automatically with",
     crashed: "The component threw an error:",
     tryAgain: "Try again",
+    reload: "↻ Reload",
+    openNewTab: "Open in a new tab ↗",
+    frameTitle: "Task page preview",
   },
   timer: {
     start: (minutes: number) => `▶ Start (${minutes} min)`,

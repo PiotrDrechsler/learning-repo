@@ -1,0 +1,38 @@
+{
+  "title": {
+    "pl": "Strona produktu: Server Components, Suspense i streaming",
+    "en": "Product page: Server Components, Suspense and streaming"
+  },
+  "summary": {
+    "pl": "Wolna strona z waterfallem zapytań. Przyspiesz ją: równoległe pobieranie, streaming przez Suspense, loading.tsx, error.tsx i 404.",
+    "en": "A slow page with a request waterfall. Speed it up: parallel fetching, streaming with Suspense, loading.tsx, error.tsx and a 404."
+  },
+  "stack": "nextjs",
+  "level": "mid",
+  "lang": "ts",
+  "minutes": 35,
+  "tags": [
+    "server-components",
+    "suspense",
+    "streaming",
+    "loading-tsx",
+    "error-tsx",
+    "not-found",
+    "app-router"
+  ],
+  "added": "2026-10-27",
+  "route": "/sandbox/008-task/1",
+  "solutionRoute": "/sandbox/008-solution/1",
+  "files": [
+    "app/sandbox/008-task/[id]/page.tsx",
+    "app/sandbox/008-task/[id]/loading.tsx (nowy / new)",
+    "app/sandbox/008-task/[id]/error.tsx (nowy / new)",
+    "app/sandbox/008-task/[id]/not-found.tsx (nowy / new)"
+  ],
+  "solutionFiles": [
+    "app/sandbox/008-solution/[id]/page.tsx",
+    "app/sandbox/008-solution/[id]/loading.tsx",
+    "app/sandbox/008-solution/[id]/error.tsx",
+    "app/sandbox/008-solution/[id]/not-found.tsx"
+  ]
+}

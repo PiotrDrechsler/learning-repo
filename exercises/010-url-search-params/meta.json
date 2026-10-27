@@ -1,0 +1,35 @@
+{
+  "title": {
+    "pl": "Katalog z filtrami w URL (searchParams)",
+    "en": "Catalog with filters in the URL (searchParams)"
+  },
+  "summary": {
+    "pl": "Wyszukiwanie, kategoria, sortowanie i paginacja trzymane w adresie: Server Component czyta searchParams, klient zmienia URL z debounce.",
+    "en": "Search, category, sorting and pagination kept in the address: a Server Component reads searchParams, the client updates the URL with debounce."
+  },
+  "stack": "nextjs",
+  "level": "mid",
+  "lang": "ts",
+  "minutes": 40,
+  "tags": [
+    "searchParams",
+    "url-state",
+    "useRouter",
+    "useTransition",
+    "pagination",
+    "debounce",
+    "app-router"
+  ],
+  "added": "2026-10-27",
+  "route": "/sandbox/010-task",
+  "solutionRoute": "/sandbox/010-solution",
+  "files": [
+    "app/sandbox/010-task/page.tsx",
+    "app/sandbox/010-task/Filters.tsx"
+  ],
+  "solutionFiles": [
+    "app/sandbox/010-solution/page.tsx",
+    "app/sandbox/010-solution/Filters.tsx",
+    "app/sandbox/010-solution/params.ts"
+  ]
+}

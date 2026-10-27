@@ -7,6 +7,7 @@
     "pl": "Lista postów doładowywana przy dojściu do końca: bez duplikatów i podwójnych requestów, z obsługą końca listy i ponawianiem po błędzie.",
     "en": "A post list that loads more when you reach the end: no duplicates or double requests, end-of-list handling and retry after errors."
   },
+  "stack": "react",
   "level": "mid",
   "lang": "js",
   "minutes": 35,

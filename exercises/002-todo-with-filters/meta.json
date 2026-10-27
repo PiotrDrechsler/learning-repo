@@ -7,6 +7,7 @@
     "pl": "Klasyczne todo, ale porządnie: niemutowalne aktualizacje, filtry jako stan pochodny, edycja w miejscu i zapis w localStorage.",
     "en": "A classic todo done properly: immutable updates, filters as derived state, inline editing and persistence in localStorage."
   },
+  "stack": "react",
   "level": "junior+",
   "lang": "js",
   "minutes": 25,

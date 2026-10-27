@@ -21,6 +21,9 @@ const imports = [];
 const entries = [];
 for (const folder of folders) {
   const n = folder.slice(0, 3);
+  // Zadania Next.js mają własne trasy w app/sandbox, nie trafiają do rejestru komponentów.
+  const meta = JSON.parse(fs.readFileSync(path.join(dir, folder, "meta.json"), "utf8"));
+  if (meta.stack === "nextjs") continue;
   if (!findBase(folder, "Exercise") || !findBase(folder, "solution")) {
     console.warn(`⚠ Pomijam ${folder}: brak pliku Exercise.* albo solution.*`);
     continue;

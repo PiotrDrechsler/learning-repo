@@ -5,6 +5,7 @@ import DoneToggle from "@/components/DoneToggle";
 import { getExercise, getNeighbours } from "@/lib/exercises";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale.server";
+import { STACK_LABELS } from "@/lib/stack";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -23,7 +24,6 @@ export default async function ExercisePage({ params }: Props) {
   const exercise = getExercise(slug, locale);
   if (!exercise) notFound();
   const { prev, next } = getNeighbours(slug, locale);
-  const filePath = `exercises/${exercise.slug}/${exercise.exerciseFile}`;
 
   return (
     <article className="exercise-page">
@@ -36,6 +36,7 @@ export default async function ExercisePage({ params }: Props) {
         <div>
           <h1>{exercise.title}</h1>
           <div className="exercise-tags">
+            <span className={`pill pill-${exercise.stack}`}>{STACK_LABELS[exercise.stack]}</span>
             <span className={`pill pill-${exercise.lang}`}>{exercise.lang.toUpperCase()}</span>
             <span className="pill">{exercise.level}</span>
             <span className="pill">⏱ {t.exercise.minutes(exercise.minutes)}</span>
@@ -55,9 +56,29 @@ export default async function ExercisePage({ params }: Props) {
         <DoneToggle slug={exercise.slug} />
       </div>
 
-      <p className="file-hint">
-        {t.exercise.fileHintBefore} <code>{filePath}</code>. {t.exercise.fileHintMiddle} <code>git restore {filePath}</code>
-      </p>
+      {exercise.stack === "nextjs" ? (
+        <div className="file-hint">
+          <p>{t.exercise.filesHint}</p>
+          <ul>
+            {exercise.files.map((file) => (
+              <li key={file}>
+                <code>{file}</code>
+              </li>
+            ))}
+          </ul>
+          <p>
+            {t.exercise.restoreHint}{" "}
+            <code>
+              git restore app/sandbox/{exercise.number}-task && git clean -fd app/sandbox/{exercise.number}-task
+            </code>
+          </p>
+        </div>
+      ) : (
+        <p className="file-hint">
+          {t.exercise.fileHintBefore} <code>{exercise.files[0]}</code>. {t.exercise.fileHintMiddle}{" "}
+          <code>git restore {exercise.files[0]}</code>
+        </p>
+      )}
 
       <div className="prose" dangerouslySetInnerHTML={{ __html: exercise.readmeHtml }} />
 
@@ -66,9 +87,16 @@ export default async function ExercisePage({ params }: Props) {
         <p>
           <Link href={`/play/${exercise.slug}?solution=1`}>{t.exercise.runSolution}</Link>
         </p>
-        <pre>
-          <code>{exercise.solutionCode}</code>
-        </pre>
+        {exercise.solution.map((file) => (
+          <div key={file.path}>
+            <p className="solution-file">
+              <code>{file.path}</code>
+            </p>
+            <pre>
+              <code>{file.code}</code>
+            </pre>
+          </div>
+        ))}
       </details>
 
       <nav className="pager" aria-label={t.exercise.neighbours}>

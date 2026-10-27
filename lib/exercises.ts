@@ -5,16 +5,25 @@ import { DEFAULT_LOCALE, LOCALES, pick, type Locale, type Localized } from "./i1
 
 export type Level = "junior+" | "mid" | "mid+";
 export type Lang = "ts" | "js";
+/** react = komponent renderowany na placu zabaw; nextjs = własne trasy w app/sandbox. */
+export type Stack = "react" | "nextjs";
 
 /** Kształt meta.json. Tytuł i opis mogą być zwykłym tekstem albo obiektem { pl, en }. */
 interface RawMeta {
   title: Localized | string;
   summary: Localized | string;
+  stack?: Stack;
   level: Level;
   lang: Lang;
   minutes: number;
   tags: string[];
   added: string;
+  /** Tylko nextjs: adres strony z zadaniem i z rozwiązaniem. */
+  route?: string;
+  solutionRoute?: string;
+  /** Tylko nextjs: pliki do edycji i pliki rozwiązania (ścieżki od katalogu głównego repo). */
+  files?: string[];
+  solutionFiles?: string[];
 }
 
 export interface ExerciseMeta {
@@ -26,6 +35,7 @@ export interface ExerciseMeta {
   summary: string;
   /** Tytuły i opisy we wszystkich językach: wyszukiwarka znajdzie zadanie po polsku i po angielsku. */
   searchText: string;
+  stack: Stack;
   level: Level;
   lang: Lang;
   /** Limit czasu jak na rozmowie, w minutach. */
@@ -35,14 +45,23 @@ export interface ExerciseMeta {
   added: string;
 }
 
-export interface ExerciseDetail extends ExerciseMeta {
-  readmeHtml: string;
-  exerciseFile: string;
-  solutionFile: string;
-  solutionCode: string;
+export interface SourceFile {
+  path: string;
+  code: string;
 }
 
-const EXERCISES_DIR = path.join(process.cwd(), "exercises");
+export interface ExerciseDetail extends ExerciseMeta {
+  readmeHtml: string;
+  /** Pliki, w których kodujesz (ścieżki od katalogu głównego repo). */
+  files: string[];
+  solution: SourceFile[];
+  /** Tylko nextjs. */
+  route: string | null;
+  solutionRoute: string | null;
+}
+
+const ROOT = process.cwd();
+const EXERCISES_DIR = path.join(ROOT, "exercises");
 const FOLDER_RE = /^\d{3}-[a-z0-9-]+$/;
 
 function listFolders(): string[] {
@@ -53,15 +72,18 @@ function listFolders(): string[] {
     .sort();
 }
 
-function readMeta(slug: string, locale: Locale): ExerciseMeta {
-  const raw = JSON.parse(fs.readFileSync(path.join(EXERCISES_DIR, slug, "meta.json"), "utf8")) as RawMeta;
-  const searchText = LOCALES.map((l) => `${pick(raw.title, l)} ${pick(raw.summary, l)}`).join(" ");
+function readRaw(slug: string): RawMeta {
+  return JSON.parse(fs.readFileSync(path.join(EXERCISES_DIR, slug, "meta.json"), "utf8")) as RawMeta;
+}
+
+function toMeta(slug: string, raw: RawMeta, locale: Locale): ExerciseMeta {
   return {
     slug,
     number: slug.slice(0, 3),
     title: pick(raw.title, locale),
     summary: pick(raw.summary, locale),
-    searchText,
+    searchText: LOCALES.map((l) => `${pick(raw.title, l)} ${pick(raw.summary, l)}`).join(" "),
+    stack: raw.stack ?? "react",
     level: raw.level,
     lang: raw.lang,
     minutes: raw.minutes,
@@ -73,9 +95,15 @@ function readMeta(slug: string, locale: Locale): ExerciseMeta {
 function findFile(slug: string, base: string): string {
   const dir = path.join(EXERCISES_DIR, slug);
   for (const ext of [".tsx", ".jsx", ".ts", ".js"]) {
-    if (fs.existsSync(path.join(dir, base + ext))) return base + ext;
+    if (fs.existsSync(path.join(dir, base + ext))) return `exercises/${slug}/${base}${ext}`;
   }
   throw new Error(`Brak pliku ${base}.(tsx|jsx) w exercises/${slug}`);
+}
+
+function readSource(relativePath: string): SourceFile {
+  const full = path.join(ROOT, relativePath);
+  const code = fs.existsSync(full) ? fs.readFileSync(full, "utf8") : `// Brak pliku: ${relativePath}`;
+  return { path: relativePath, code };
 }
 
 /** README.md to wersja polska, README.<język>.md to tłumaczenia. Brak tłumaczenia = polski. */
@@ -87,21 +115,24 @@ function readReadme(slug: string, locale: Locale): string {
 }
 
 export function getAllExercises(locale: Locale): ExerciseMeta[] {
-  return listFolders().map((slug) => readMeta(slug, locale));
+  return listFolders().map((slug) => toMeta(slug, readRaw(slug), locale));
 }
 
 export function getExercise(slug: string, locale: Locale): ExerciseDetail | null {
   if (!FOLDER_RE.test(slug) || !listFolders().includes(slug)) return null;
-  const meta = readMeta(slug, locale);
-  const dir = path.join(EXERCISES_DIR, slug);
-  const exerciseFile = findFile(slug, "Exercise");
-  const solutionFile = findFile(slug, "solution");
+  const raw = readRaw(slug);
+  const meta = toMeta(slug, raw, locale);
+
+  const files = meta.stack === "nextjs" ? (raw.files ?? []) : [findFile(slug, "Exercise")];
+  const solutionPaths = meta.stack === "nextjs" ? (raw.solutionFiles ?? []) : [findFile(slug, "solution")];
+
   return {
     ...meta,
     readmeHtml: marked.parse(readReadme(slug, locale), { async: false }) as string,
-    exerciseFile,
-    solutionFile,
-    solutionCode: fs.readFileSync(path.join(dir, solutionFile), "utf8"),
+    files,
+    solution: solutionPaths.map(readSource),
+    route: raw.route ?? null,
+    solutionRoute: raw.solutionRoute ?? null,
   };
 }
 

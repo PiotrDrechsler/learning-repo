@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import type { ExerciseMeta, Lang, Level } from "@/lib/exercises";
+import type { ExerciseMeta, Lang, Level, Stack } from "@/lib/exercises";
 import { searchExercises } from "@/lib/search";
+import { STACK_LABELS } from "@/lib/stack";
 import { useProgress } from "@/lib/useProgress";
 import { useI18n } from "./I18nProvider";
 
@@ -12,6 +13,7 @@ type Status = "all" | "todo" | "done";
 
 const LEVELS: Level[] = ["junior+", "mid", "mid+"];
 const LANGS: Lang[] = ["ts", "js"];
+const STACKS: Stack[] = ["react", "nextjs"];
 
 export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta[] }) {
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
   const b = t.browser;
 
   const [query, setQuery] = useState("");
+  const [stack, setStack] = useState<Stack | "all">("all");
   const [lang, setLang] = useState<Lang | "all">("all");
   const [level, setLevel] = useState<Level | "all">("all");
   const [status, setStatus] = useState<Status>("all");
@@ -30,12 +33,13 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
   const results = useMemo(() => {
     return searchExercises(exercises, deferredQuery)
       .map((h) => h.exercise)
+      .filter((e) => stack === "all" || e.stack === stack)
       .filter((e) => lang === "all" || e.lang === lang)
       .filter((e) => level === "all" || e.level === level)
       .filter((e) => status === "all" || (status === "done" ? isDone(e.slug) : !isDone(e.slug)));
-  }, [exercises, deferredQuery, lang, level, status, isDone]);
+  }, [exercises, deferredQuery, stack, lang, level, status, isDone]);
 
-  useEffect(() => setActive(0), [deferredQuery, lang, level, status]);
+  useEffect(() => setActive(0), [deferredQuery, stack, lang, level, status]);
 
   // "/" albo Ctrl/Cmd+K ustawia kursor w wyszukiwarce
   useEffect(() => {
@@ -95,6 +99,14 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
       </div>
 
       <div className="filters">
+        <FilterGroup
+          label={b.stack}
+          allLabel={b.all}
+          value={stack}
+          options={["all", ...STACKS] as (Stack | "all")[]}
+          labels={STACK_LABELS}
+          onChange={setStack}
+        />
         <FilterGroup label={b.lang} allLabel={b.all} value={lang} options={["all", ...LANGS] as (Lang | "all")[]} onChange={setLang} />
         <FilterGroup label={b.level} allLabel={b.all} value={level} options={["all", ...LEVELS] as (Level | "all")[]} onChange={setLevel} />
         <FilterGroup
@@ -136,6 +148,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
                 </span>
                 <span className="exercise-summary">{e.summary}</span>
                 <span className="exercise-tags">
+                  <span className={`pill pill-${e.stack}`}>{STACK_LABELS[e.stack]}</span>
                   <span className={`pill pill-${e.lang}`}>{e.lang.toUpperCase()}</span>
                   <span className="pill">{e.level}</span>
                   <span className="pill">{e.minutes} min</span>
@@ -159,6 +172,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
             className="link-button"
             onClick={() => {
               setQuery("");
+              setStack("all");
               setLang("all");
               setLevel("all");
               setStatus("all");

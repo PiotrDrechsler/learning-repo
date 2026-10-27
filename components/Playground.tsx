@@ -77,3 +77,27 @@ class ErrorBoundary extends Component<BoundaryProps, { error: Error | null }> {
     return this.props.children;
   }
 }
+
+/** Plac zabaw dla zadań Next.js: prawdziwa trasa z app/sandbox w ramce, z timerem i przeładowaniem. */
+export function FramePlayground({ slug, minutes, src }: { slug: string; minutes: number; src: string }) {
+  const { t } = useI18n();
+  const [frameKey, setFrameKey] = useState(0);
+
+  return (
+    <>
+      <div className="play-toolbar">
+        <Timer storageKey={`timer:${slug}`} minutes={minutes} />
+        <div className="play-toolbar-right">
+          <code className="play-file">{src}</code>
+          <button type="button" className="button" onClick={() => setFrameKey((n) => n + 1)}>
+            {t.play.reload}
+          </button>
+          <a className="button" href={src} target="_blank" rel="noreferrer">
+            {t.play.openNewTab}
+          </a>
+        </div>
+      </div>
+      <iframe key={`${src}-${frameKey}`} className="sandbox-frame" src={src} title={t.play.frameTitle} />
+    </>
+  );
+}

@@ -5,6 +5,11 @@ Każde zadanie wygląda jak na rozmowie: limit czasu, konkretne wymagania, bonus
 
 Stack: **Next.js (App Router) + React 19**, zadania w **TypeScript** i **JavaScript**.
 
+Dwa rodzaje zadań (filtr „Technologia” na liście):
+
+- **React**: komponent albo hook, renderowany na placu zabaw. Kodujesz w `exercises/<numer-nazwa>/Exercise.tsx` (albo `.jsx`).
+- **Next.js**: prawdziwe trasy App Routera w `app/sandbox/<numer>-task/` (Server Components, Suspense, Server Actions, searchParams). Plac zabaw pokazuje stronę w ramce z timerem. Rozwiązanie leży obok, w `app/sandbox/<numer>-solution/`.
+
 ## Start
 
 ```bash
@@ -18,7 +23,7 @@ Otwórz http://localhost:3000.
 
 1. Na stronie głównej znajdź zadanie. Wyszukiwarka: `/` albo `Ctrl/Cmd + K`, strzałki ↑↓ i Enter. Szuka po tytule, tagach, opisie, numerze, poziomie (`mid`) i języku (`ts`, `js`), ignoruje polskie znaki.
 2. Przeczytaj treść i kliknij **Start: plac zabaw z timerem**.
-3. Koduj w `exercises/<numer-nazwa>/Exercise.tsx` (albo `.jsx`). Strona odświeża się sama po zapisie.
+3. Koduj w pliku podanym na stronie zadania: `exercises/<numer-nazwa>/Exercise.tsx` (React) albo w `app/sandbox/<numer>-task/` (Next.js). Strona odświeża się sama po zapisie.
 4. Po czasie porównaj z zakładką **Rozwiązanie** i przejdź przez pytania follow-up na głos.
 5. Oznacz zadanie jako zrobione (postęp zapisuje się w przeglądarce).
 
@@ -26,6 +31,8 @@ Reset zadania do wersji startowej:
 
 ```bash
 git restore exercises/001-debounced-user-search/Exercise.tsx
+# zadanie Next.js (usuwa też pliki, które dodałeś, np. loading.tsx):
+git restore app/sandbox/008-task && git clean -fd app/sandbox/008-task
 ```
 
 Wskazówka: rób każde podejście na osobnej gałęzi (`git switch -c 001-podejscie-1`), wtedy zostaje historia Twoich rozwiązań.
@@ -59,7 +66,8 @@ exercises/
     Exercise.tsx   tu kodujesz
     solution.tsx   przykładowe rozwiązanie
   _registry.generated.ts   generowany automatycznie (npm run registry)
-app/               strony Next.js i mock API
+app/               strony aplikacji i mock API
+app/sandbox/       trasy zadań Next.js: <numer>-task (Twoje) i <numer>-solution
 components/        wyszukiwarka, plac zabaw, timer
 scripts/           generator rejestru i szkieletu nowego ćwiczenia
 ```
@@ -83,3 +91,6 @@ Tworzy kolejny numerowany folder z szablonem. Rejestr odświeża się sam przy `
 | 005 | Infinite scroll z IntersectionObserver | JS | mid | 35 min |
 | 006 | Komponent oceny gwiazdkami | JS | junior+ | 20 min |
 | 007 | Stoper z międzyczasami | TS | junior+ | 20 min |
+| 008 | **Next.js:** Server Components, Suspense i streaming | TS | mid | 35 min |
+| 009 | **Next.js:** Server Actions i useActionState | TS | mid | 35 min |
+| 010 | **Next.js:** filtry w URL (searchParams) | TS | mid | 40 min |

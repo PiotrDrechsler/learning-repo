@@ -7,6 +7,7 @@
     "pl": "Start, pauza, reset i międzyczasy. Pułapki: stale closure w setInterval, sprzątanie interwału i dryf czasu.",
     "en": "Start, pause, reset and lap times. Traps: stale closures in setInterval, cleaning up the interval and time drift."
   },
+  "stack": "react",
   "level": "junior+",
   "lang": "ts",
   "minutes": 20,
