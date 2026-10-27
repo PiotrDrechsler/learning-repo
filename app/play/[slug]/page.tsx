@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CodeEditor from "@/components/CodeEditor";
 import Playground, { FramePlayground, TestPlayground } from "@/components/Playground";
 import { getExercise } from "@/lib/exercises";
 import { getDictionary } from "@/lib/i18n";
@@ -36,6 +37,15 @@ export default async function PlayPage({ params, searchParams }: Props) {
           {t.play.solution}
         </Link>
       </div>
+      <div className="workbench">
+        <CodeEditor
+          key={showSolution ? "solution" : "exercise"}
+          slug={slug}
+          files={exercise.files}
+          newFiles={exercise.newFiles}
+          readOnlyFiles={showSolution ? exercise.solution : undefined}
+        />
+        <div className="workbench-preview" aria-label={t.editor.preview}>
       {exercise.kind === "route" ? (
         <FramePlayground
           slug={slug}
@@ -58,6 +68,8 @@ export default async function PlayPage({ params, searchParams }: Props) {
           file={showSolution ? exercise.solution[0].path : exercise.files[0]}
         />
       )}
+        </div>
+      </div>
     </div>
   );
 }

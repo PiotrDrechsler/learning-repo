@@ -40,7 +40,7 @@ Wcześniejsze, trudniejsze zadania (mid) są na gałęzi [`archiwum`](https://gi
 
 1. Na stronie głównej znajdź zadanie. Wyszukiwarka: `/` albo `Ctrl/Cmd + K`, strzałki ↑↓ i Enter. Szuka w obu językach, ignoruje polskie znaki. Filtry: kategoria, poziom, status.
 2. Przeczytaj treść i kliknij **Start: plac zabaw z timerem**.
-3. Koduj w pliku podanym na stronie zadania. Plac zabaw odświeża się sam po zapisie.
+3. Koduj w **edytorze na placu zabaw** (lewa kolumna): `Ctrl + S` zapisuje plik na dysk, a podgląd po prawej (komponent, testy albo strona Next.js) odświeża się sam. Możesz też edytować te same pliki w VS Code. „Przywróć start” cofa plik do wersji startowej.
 4. Po czasie porównaj z zakładką **Rozwiązanie** i przejdź przez pytania follow-up na głos.
 5. Oznacz zadanie jako zrobione (postęp zapisuje się w przeglądarce).
 

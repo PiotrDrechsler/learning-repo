@@ -65,6 +65,7 @@ export default async function ExercisePage({ params }: Props) {
             {exercise.files.map((file) => (
               <li key={file}>
                 <code>{file}</code>
+                {exercise.newFiles.includes(file) && <span className="muted"> · {t.editor.newFile}</span>}
               </li>
             ))}
           </ul>

@@ -35,6 +35,8 @@ interface RawMeta {
   solutionRoute?: string;
   /** Tylko nextjs: pliki do edycji i pliki rozwiązania (ścieżki od katalogu głównego repo). */
   files?: string[];
+  /** Tylko nextjs: pliki z listy files, których jeszcze nie ma i tworzysz je sam (np. loading.tsx). */
+  newFiles?: string[];
   solutionFiles?: string[];
 }
 
@@ -67,6 +69,8 @@ export interface ExerciseDetail extends ExerciseMeta {
   readmeHtml: string;
   /** Pliki, w których kodujesz (ścieżki od katalogu głównego repo). */
   files: string[];
+  /** Pliki z `files`, które trzeba utworzyć od zera. */
+  newFiles: string[];
   solution: SourceFile[];
   /** Tylko nextjs. */
   route: string | null;
@@ -146,6 +150,7 @@ export function getExercise(slug: string, locale: Locale): ExerciseDetail | null
     ...meta,
     readmeHtml: marked.parse(readReadme(slug, locale), { async: false }) as string,
     files,
+    newFiles: meta.kind === "route" ? (raw.newFiles ?? []) : [],
     solution: solutionPaths.map(readSource),
     route: raw.route ?? null,
     solutionRoute: raw.solutionRoute ?? null,
