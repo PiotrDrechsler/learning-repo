@@ -6,6 +6,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import type { ExerciseMeta, Lang, Level } from "@/lib/exercises";
 import { searchExercises } from "@/lib/search";
 import { useProgress } from "@/lib/useProgress";
+import { useI18n } from "./I18nProvider";
 
 type Status = "all" | "todo" | "done";
 
@@ -16,6 +17,8 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const { isDone, done } = useProgress();
+  const { t } = useI18n();
+  const b = t.browser;
 
   const [query, setQuery] = useState("");
   const [lang, setLang] = useState<Lang | "all">("all");
@@ -83,8 +86,8 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onInputKey}
-          placeholder="Szukaj: debounce, modal, hook, ts, mid…"
-          aria-label="Szukaj ćwiczeń"
+          placeholder={b.placeholder}
+          aria-label={b.searchLabel}
           aria-controls="exercise-results"
           autoComplete="off"
         />
@@ -92,18 +95,19 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
       </div>
 
       <div className="filters">
-        <FilterGroup label="Język" value={lang} options={["all", ...LANGS] as (Lang | "all")[]} onChange={setLang} />
-        <FilterGroup label="Poziom" value={level} options={["all", ...LEVELS] as (Level | "all")[]} onChange={setLevel} />
+        <FilterGroup label={b.lang} allLabel={b.all} value={lang} options={["all", ...LANGS] as (Lang | "all")[]} onChange={setLang} />
+        <FilterGroup label={b.level} allLabel={b.all} value={level} options={["all", ...LEVELS] as (Level | "all")[]} onChange={setLevel} />
         <FilterGroup
-          label="Status"
+          label={b.status}
+          allLabel={b.all}
           value={status}
           options={["all", "todo", "done"] as Status[]}
-          labels={{ all: "wszystkie", todo: "do zrobienia", done: "zrobione" }}
+          labels={{ todo: b.todo, done: b.done }}
           onChange={setStatus}
         />
       </div>
 
-      <div className="tag-cloud" aria-label="Popularne tagi">
+      <div className="tag-cloud" aria-label={b.popularTags}>
         {allTags.map((tag) => (
           <button key={tag} type="button" className="tag tag-button" onClick={() => setQuery(tag)}>
             #{tag}
@@ -112,8 +116,8 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
       </div>
 
       <p className="results-meta">
-        {results.length} z {exercises.length} · zrobione {doneCount}/{exercises.length}
-        <span className="hint"> · ↑↓ wybór, Enter otwiera, Esc czyści</span>
+        {b.results(results.length, exercises.length, doneCount)}
+        <span className="hint"> · {b.keyboardHint}</span>
       </p>
 
       <ol id="exercise-results" className="exercise-list">
@@ -128,7 +132,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
               <span className="exercise-body">
                 <span className="exercise-title">
                   {e.title}
-                  {isDone(e.slug) && <span className="done-badge">✓ zrobione</span>}
+                  {isDone(e.slug) && <span className="done-badge">{b.doneBadge}</span>}
                 </span>
                 <span className="exercise-summary">{e.summary}</span>
                 <span className="exercise-tags">
@@ -149,7 +153,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
 
       {results.length === 0 && (
         <div className="empty">
-          Nic nie pasuje do „{query}”. Spróbuj innego słowa albo{" "}
+          {b.emptyBefore(query.trim())}{" "}
           <button
             type="button"
             className="link-button"
@@ -160,7 +164,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
               setStatus("all");
             }}
           >
-            wyczyść filtry
+            {b.clearFilters}
           </button>
           .
         </div>
@@ -171,12 +175,14 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
 
 function FilterGroup<T extends string>({
   label,
+  allLabel,
   value,
   options,
   labels,
   onChange,
 }: {
   label: string;
+  allLabel: string;
   value: T;
   options: T[];
   labels?: Partial<Record<T, string>>;
@@ -193,7 +199,7 @@ function FilterGroup<T extends string>({
           aria-pressed={option === value}
           onClick={() => onChange(option)}
         >
-          {labels?.[option] ?? (option === "all" ? "wszystkie" : option)}
+          {labels?.[option] ?? (option === "all" ? allLabel : option)}
         </button>
       ))}
     </div>

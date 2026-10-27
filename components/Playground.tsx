@@ -2,6 +2,7 @@
 
 import { Component, useState, type ErrorInfo, type ReactNode } from "react";
 import { registry } from "@/exercises/_registry.generated";
+import { useI18n } from "./I18nProvider";
 import Timer from "./Timer";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function Playground({ slug, minutes, mode, file }: Props) {
+  const { t } = useI18n();
   const entry = registry[slug];
   // Klucz do ręcznego "zresetuj komponent" (remount bez przeładowania strony).
   const [runId, setRunId] = useState(0);
@@ -19,7 +21,7 @@ export default function Playground({ slug, minutes, mode, file }: Props) {
   if (!entry) {
     return (
       <div className="stage-error">
-        Brak ćwiczenia <code>{slug}</code> w rejestrze. Uruchom <code>npm run registry</code> (robi się samo przy{" "}
+        {t.play.missingBefore} <code>{slug}</code> {t.play.missingAfter} <code>npm run registry</code> {t.play.missingEnd}{" "}
         <code>npm run dev</code>).
       </div>
     );
@@ -34,12 +36,12 @@ export default function Playground({ slug, minutes, mode, file }: Props) {
         <div className="play-toolbar-right">
           <code className="play-file">{file}</code>
           <button type="button" className="button" onClick={() => setRunId((n) => n + 1)}>
-            ↻ Remount
+            {t.play.remount}
           </button>
         </div>
       </div>
       <div className="stage">
-        <ErrorBoundary key={`${mode}-${runId}`}>
+        <ErrorBoundary key={`${mode}-${runId}`} crashedLabel={t.play.crashed} retryLabel={t.play.tryAgain}>
           <View />
         </ErrorBoundary>
       </div>
@@ -47,7 +49,9 @@ export default function Playground({ slug, minutes, mode, file }: Props) {
   );
 }
 
-class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+type BoundaryProps = { children: ReactNode; crashedLabel: string; retryLabel: string };
+
+class ErrorBoundary extends Component<BoundaryProps, { error: Error | null }> {
   state = { error: null as Error | null };
 
   static getDerivedStateFromError(error: Error) {
@@ -62,10 +66,10 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
     if (this.state.error) {
       return (
         <div className="stage-error" role="alert">
-          <strong>Komponent rzucił błąd:</strong>
+          <strong>{this.props.crashedLabel}</strong>
           <pre>{this.state.error.message}</pre>
           <button type="button" className="button" onClick={() => this.setState({ error: null })}>
-            Spróbuj ponownie
+            {this.props.retryLabel}
           </button>
         </div>
       );

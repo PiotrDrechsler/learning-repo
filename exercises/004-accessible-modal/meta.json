@@ -1,9 +1,22 @@
 {
-  "title": "Dostępny modal z portalem",
-  "summary": "Reużywalny <Modal>: createPortal, zamykanie Escape i kliknięciem w tło, pułapka focusu, powrót focusu i blokada scrolla.",
+  "title": {
+    "pl": "Dostępny modal z portalem",
+    "en": "Accessible modal with a portal"
+  },
+  "summary": {
+    "pl": "Reużywalny <Modal>: createPortal, zamykanie Escape i kliknięciem w tło, pułapka focusu, powrót focusu i blokada scrolla.",
+    "en": "A reusable <Modal>: createPortal, closing on Escape and backdrop click, focus trap, focus restore and scroll lock."
+  },
   "level": "mid",
   "lang": "ts",
   "minutes": 35,
-  "tags": ["portal", "a11y", "focus", "useRef", "useEffect", "komponent-reuzywalny"],
+  "tags": [
+    "portal",
+    "a11y",
+    "focus",
+    "useRef",
+    "useEffect",
+    "reusable-component"
+  ],
   "added": "2026-10-27"
 }

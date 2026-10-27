@@ -28,8 +28,8 @@ fs.writeFileSync(
   path.join(target, "meta.json"),
   JSON.stringify(
     {
-      title: "Tytuł ćwiczenia",
-      summary: "Jedno zdanie: co trzeba zbudować.",
+      title: { pl: "Tytuł ćwiczenia", en: "Exercise title" },
+      summary: { pl: "Jedno zdanie: co trzeba zbudować.", en: "One sentence: what to build." },
       level: "mid",
       lang,
       minutes: 30,
@@ -43,6 +43,10 @@ fs.writeFileSync(
 fs.writeFileSync(
   path.join(target, "README.md"),
   `## Kontekst\n\nOpis sytuacji z rozmowy.\n\n## Wymagania\n\n- [ ] ...\n\n## Bonus\n\n- ...\n\n## Pytania follow-up\n\n<details><summary>Pytanie?</summary>\n\nOdpowiedź.\n\n</details>\n`,
+);
+fs.writeFileSync(
+  path.join(target, "README.en.md"),
+  `## Context\n\nThe interview situation.\n\n## Requirements\n\n- [ ] ...\n\n## Bonus\n\n- ...\n\n## Follow-up questions\n\n<details><summary>Question?</summary>\n\nAnswer.\n\n</details>\n`,
 );
 const component = `"use client";\n\nexport default function Exercise() {\n  return <div>TODO</div>;\n}\n`;
 fs.writeFileSync(path.join(target, `Exercise.${ext}`), component);

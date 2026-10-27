@@ -1,15 +1,19 @@
 import ExerciseBrowser from "@/components/ExerciseBrowser";
 import { getAllExercises } from "@/lib/exercises";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale.server";
 
-export default function HomePage() {
-  const exercises = getAllExercises();
+export default async function HomePage() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const exercises = getAllExercises(locale);
+
   return (
     <>
       <section className="hero">
-        <h1>Ćwiczenia</h1>
+        <h1>{t.home.title}</h1>
         <p>
-          Zadania jak z rozmowy technicznej: limit czasu, konkretne wymagania i pytania, które padają po kodzie.
-          Wybierz zadanie, odpal timer i koduj w pliku <code>Exercise</code> danego ćwiczenia.
+          {t.home.intro} <code>Exercise</code> {t.home.introEnd}
         </p>
       </section>
       <ExerciseBrowser exercises={exercises} />

@@ -1,9 +1,22 @@
 {
-  "title": "Wyszukiwarka użytkowników z debounce",
-  "summary": "Input, który odpytuje API dopiero gdy użytkownik przestanie pisać, nie gubi się przy wyścigu odpowiedzi i obsługuje loading, błąd i pusty wynik.",
+  "title": {
+    "pl": "Wyszukiwarka użytkowników z debounce",
+    "en": "Debounced user search"
+  },
+  "summary": {
+    "pl": "Input, który odpytuje API dopiero gdy użytkownik przestanie pisać, nie gubi się przy wyścigu odpowiedzi i obsługuje loading, błąd i pusty wynik.",
+    "en": "An input that only calls the API once the user stops typing, survives racing responses and handles loading, error and empty states."
+  },
   "level": "mid",
   "lang": "ts",
   "minutes": 30,
-  "tags": ["debounce", "fetch", "abortcontroller", "race-condition", "useEffect", "custom-hook"],
+  "tags": [
+    "debounce",
+    "fetch",
+    "abortcontroller",
+    "race-condition",
+    "useEffect",
+    "custom-hook"
+  ],
   "added": "2026-10-27"
 }

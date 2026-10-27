@@ -30,6 +30,16 @@ git restore exercises/001-debounced-user-search/Exercise.tsx
 
 Wskazówka: rób każde podejście na osobnej gałęzi (`git switch -c 001-podejscie-1`), wtedy zostaje historia Twoich rozwiązań.
 
+## Język interfejsu (PL / EN)
+
+Przełącznik **PL / EN** jest zawsze w prawym górnym rogu. Wybór zapisuje się w cookie `lang`, więc zostaje po odświeżeniu. Za pierwszym razem język bierzemy z ustawień przeglądarki.
+
+- teksty interfejsu: `lib/i18n.ts` (słownik `pl` i `en`, TypeScript pilnuje, żeby klucze były identyczne),
+- tytuł i opis ćwiczenia: `meta.json` → `"title": { "pl": "...", "en": "..." }`,
+- treść ćwiczenia: `README.md` (polski) i `README.en.md` (angielski). Brak tłumaczenia = wersja polska.
+
+Wyszukiwarka szuka w obu językach naraz.
+
 ## Mock API (do zadań)
 
 | Endpoint | Opis |
@@ -43,8 +53,9 @@ Wskazówka: rób każde podejście na osobnej gałęzi (`git switch -c 001-podej
 ```
 exercises/
   001-debounced-user-search/
-    meta.json      tytuł, opis, poziom, język, limit czasu, tagi
-    README.md      treść zadania i pytania follow-up
+    meta.json      tytuł i opis (pl/en), poziom, język, limit czasu, tagi
+    README.md      treść zadania i pytania follow-up (PL)
+    README.en.md   to samo po angielsku
     Exercise.tsx   tu kodujesz
     solution.tsx   przykładowe rozwiązanie
   _registry.generated.ts   generowany automatycznie (npm run registry)

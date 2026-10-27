@@ -1,9 +1,21 @@
 {
-  "title": "Komponent oceny gwiazdkami",
-  "summary": "Kontrolowany <StarRating> z podglądem po najechaniu, obsługą klawiatury, trybem tylko do odczytu i sensowną dostępnością.",
+  "title": {
+    "pl": "Komponent oceny gwiazdkami",
+    "en": "Star rating component"
+  },
+  "summary": {
+    "pl": "Kontrolowany <StarRating> z podglądem po najechaniu, obsługą klawiatury, trybem tylko do odczytu i sensowną dostępnością.",
+    "en": "A controlled <StarRating> with hover preview, keyboard support, a read-only mode and sensible accessibility."
+  },
   "level": "junior+",
   "lang": "js",
   "minutes": 20,
-  "tags": ["props", "komponent-kontrolowany", "a11y", "klawiatura", "useState"],
+  "tags": [
+    "props",
+    "controlled-component",
+    "a11y",
+    "keyboard",
+    "useState"
+  ],
   "added": "2026-10-27"
 }

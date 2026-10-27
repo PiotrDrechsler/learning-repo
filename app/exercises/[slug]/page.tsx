@@ -2,30 +2,33 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DoneToggle from "@/components/DoneToggle";
-import { getAllExercises, getExercise, getNeighbours } from "@/lib/exercises";
+import { getExercise, getNeighbours } from "@/lib/exercises";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale.server";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllExercises().map((e) => ({ slug: e.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const exercise = getExercise(slug);
-  return { title: exercise ? `${exercise.number}. ${exercise.title} · NAUKA REACT` : "NAUKA REACT" };
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const exercise = getExercise(slug, locale);
+  return { title: exercise ? `${exercise.number}. ${exercise.title} · ${t.meta.title}` : t.meta.title };
 }
 
 export default async function ExercisePage({ params }: Props) {
   const { slug } = await params;
-  const exercise = getExercise(slug);
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const exercise = getExercise(slug, locale);
   if (!exercise) notFound();
-  const { prev, next } = getNeighbours(slug);
+  const { prev, next } = getNeighbours(slug, locale);
+  const filePath = `exercises/${exercise.slug}/${exercise.exerciseFile}`;
 
   return (
     <article className="exercise-page">
       <Link href="/" className="back-link">
-        ← Wszystkie ćwiczenia
+        {t.exercise.back}
       </Link>
 
       <header className="exercise-header">
@@ -35,10 +38,10 @@ export default async function ExercisePage({ params }: Props) {
           <div className="exercise-tags">
             <span className={`pill pill-${exercise.lang}`}>{exercise.lang.toUpperCase()}</span>
             <span className="pill">{exercise.level}</span>
-            <span className="pill">⏱ {exercise.minutes} min</span>
-            {exercise.tags.map((t) => (
-              <span key={t} className="tag">
-                #{t}
+            <span className="pill">⏱ {t.exercise.minutes(exercise.minutes)}</span>
+            {exercise.tags.map((tag) => (
+              <span key={tag} className="tag">
+                #{tag}
               </span>
             ))}
           </div>
@@ -47,31 +50,42 @@ export default async function ExercisePage({ params }: Props) {
 
       <div className="actions">
         <Link href={`/play/${exercise.slug}`} className="button button-primary">
-          ▶ Start: plac zabaw z timerem
+          {t.exercise.start}
         </Link>
         <DoneToggle slug={exercise.slug} />
       </div>
 
       <p className="file-hint">
-        Kodujesz w pliku <code>exercises/{exercise.slug}/{exercise.exerciseFile}</code>. Zapisz plik, a plac zabaw
-        odświeży się sam. Chcesz zacząć od zera? <code>git restore exercises/{exercise.slug}/{exercise.exerciseFile}</code>
+        {t.exercise.fileHintBefore} <code>{filePath}</code>. {t.exercise.fileHintMiddle} <code>git restore {filePath}</code>
       </p>
 
       <div className="prose" dangerouslySetInnerHTML={{ __html: exercise.readmeHtml }} />
 
       <details className="solution">
-        <summary>Pokaż przykładowe rozwiązanie (spoiler!)</summary>
+        <summary>{t.exercise.showSolution}</summary>
         <p>
-          <Link href={`/play/${exercise.slug}?solution=1`}>Uruchom rozwiązanie na placu zabaw →</Link>
+          <Link href={`/play/${exercise.slug}?solution=1`}>{t.exercise.runSolution}</Link>
         </p>
         <pre>
           <code>{exercise.solutionCode}</code>
         </pre>
       </details>
 
-      <nav className="pager" aria-label="Sąsiednie ćwiczenia">
-        {prev ? <Link href={`/exercises/${prev.slug}`}>← {prev.number}. {prev.title}</Link> : <span />}
-        {next ? <Link href={`/exercises/${next.slug}`}>{next.number}. {next.title} →</Link> : <span />}
+      <nav className="pager" aria-label={t.exercise.neighbours}>
+        {prev ? (
+          <Link href={`/exercises/${prev.slug}`}>
+            ← {prev.number}. {prev.title}
+          </Link>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <Link href={`/exercises/${next.slug}`}>
+            {next.number}. {next.title} →
+          </Link>
+        ) : (
+          <span />
+        )}
       </nav>
     </article>
   );

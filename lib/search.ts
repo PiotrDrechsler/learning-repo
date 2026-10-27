@@ -16,7 +16,7 @@ export interface SearchHit {
 
 /**
  * Każde słowo zapytania musi pasować do któregoś pola (AND).
- * Trafienia w tytuł ważą najwięcej, potem tagi, potem opis.
+ * Trafienia w tytuł ważą najwięcej, potem tagi, potem opis. Szuka w obu językach naraz.
  */
 export function searchExercises(exercises: ExerciseMeta[], query: string): SearchHit[] {
   const tokens = normalize(query).split(/\s+/).filter(Boolean);
@@ -26,7 +26,7 @@ export function searchExercises(exercises: ExerciseMeta[], query: string): Searc
   for (const exercise of exercises) {
     const title = normalize(exercise.title);
     const tags = exercise.tags.map(normalize);
-    const summary = normalize(exercise.summary);
+    const summary = normalize(exercise.searchText); // tytuły i opisy w obu językach
     const extra = normalize(`${exercise.number} ${exercise.level} ${exercise.lang} ${exercise.slug}`);
 
     let score = 0;

@@ -75,7 +75,7 @@ pre {
 /* ---------- Szkielet ---------- */
 .site-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 14px;
   padding: 18px 24px;
   border-bottom: 1px solid var(--border);
@@ -102,6 +102,33 @@ pre {
   color: var(--muted);
   font-size: 0.9rem;
 }
+.lang-switch {
+  margin-left: auto;
+  display: inline-flex;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lang-switch button {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.lang-switch button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+.lang-switch.is-pending {
+  opacity: 0.6;
+}
+
 .site-main {
   max-width: 920px;
   margin: 0 auto;

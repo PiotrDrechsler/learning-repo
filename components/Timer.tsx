@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18n } from "./I18nProvider";
 
 type TimerState = { startedAt: number | null; elapsed: number };
 
@@ -23,6 +24,7 @@ function load(key: string): TimerState {
 
 /** Odliczanie jak na rozmowie. Stan przetrwa odświeżenie strony (sessionStorage). */
 export default function Timer({ minutes, storageKey }: { minutes: number; storageKey: string }) {
+  const { t } = useI18n();
   const [state, setState] = useState<TimerState>({ startedAt: null, elapsed: 0 });
   const [now, setNow] = useState(() => Date.now());
 
@@ -72,15 +74,15 @@ export default function Timer({ minutes, storageKey }: { minutes: number; storag
       </span>
       {running ? (
         <button type="button" className="button" onClick={pause}>
-          ❚❚ Pauza
+          {t.timer.pause}
         </button>
       ) : (
         <button type="button" className="button button-primary" onClick={start}>
-          ▶ {elapsed > 0 ? "Wznów" : `Start (${minutes} min)`}
+          {elapsed > 0 ? t.timer.resume : t.timer.start(minutes)}
         </button>
       )}
       <button type="button" className="button" onClick={reset} disabled={elapsed === 0 && !running}>
-        Reset
+        {t.timer.reset}
       </button>
     </div>
   );
