@@ -132,6 +132,13 @@ function readReadme(slug: string, locale: Locale): string {
   return fs.readFileSync(path.join(dir, "README.md"), "utf8");
 }
 
+/** Link otwierający plik w VS Code (działa, gdy aplikacja i VS Code są na tym samym komputerze). */
+export function vscodeLink(relativePath: string): string {
+  const abs = path.join(ROOT, relativePath).split(path.sep).join("/");
+  // Windows: vscode://file/C:/repo/plik.tsx, macOS/Linux: vscode://file/home/me/repo/plik.tsx
+  return `vscode://file${abs.startsWith("/") ? "" : "/"}${encodeURI(abs)}`;
+}
+
 export function getAllExercises(locale: Locale): ExerciseMeta[] {
   return listFolders().map((slug) => toMeta(slug, readRaw(slug), locale));
 }

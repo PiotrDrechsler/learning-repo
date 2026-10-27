@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import CodeEditor from "@/components/CodeEditor";
 import Playground, { FramePlayground, TestPlayground } from "@/components/Playground";
-import { getExercise } from "@/lib/exercises";
+import { getExercise, vscodeLink } from "@/lib/exercises";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale.server";
 
@@ -43,15 +42,22 @@ export default async function PlayPage({ params, searchParams }: Props) {
             📋 {t.editor.task}
             <span className="muted"> · {exercise.minutes} min</span>
           </summary>
+          <div className="task-files">
+            <strong>{showSolution ? t.play.solution : t.editor.files}</strong>
+            <ul>
+              {(showSolution ? exercise.solution.map((f) => f.path) : exercise.files).map((file) => (
+                <li key={file}>
+                  <a href={vscodeLink(file)} title={t.editor.openInEditor}>
+                    <code>{file}</code> ↗
+                  </a>
+                  {!showSolution && exercise.newFiles.includes(file) && <span className="muted"> · {t.editor.newFile}</span>}
+                </li>
+              ))}
+            </ul>
+            <p className="muted">{t.editor.saveHint}</p>
+          </div>
           <div className="prose task-prose" dangerouslySetInnerHTML={{ __html: exercise.readmeHtml }} />
         </details>
-        <CodeEditor
-          key={showSolution ? "solution" : "exercise"}
-          slug={slug}
-          files={exercise.files}
-          newFiles={exercise.newFiles}
-          readOnlyFiles={showSolution ? exercise.solution : undefined}
-        />
         <div className="workbench-preview" aria-label={t.editor.preview}>
       {exercise.kind === "route" ? (
         <FramePlayground

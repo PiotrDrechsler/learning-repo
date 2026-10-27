@@ -748,26 +748,26 @@ pre {
   color: var(--muted);
 }
 
-/* ---------- Edytor + podgląd (plac zabaw) ---------- */
+/* ---------- Plac zabaw: treść zadania + podgląd ---------- */
 .site-main:has(.play-page) {
-  max-width: 1900px;
+  max-width: 1600px;
 }
-/* Szeroki ekran: treść | edytor | podgląd. Średni: treść nad edytorem i podglądem. Wąski: wszystko w kolumnie. */
 .workbench {
   display: grid;
-  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.15fr) minmax(0, 1fr);
-  grid-template-areas: "task editor preview";
+  grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.15fr);
   gap: 16px;
   align-items: start;
 }
-.workbench > .task-panel {
-  grid-area: task;
+@media (max-width: 1000px) {
+  .workbench {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
-.workbench > .editor {
-  grid-area: editor;
+.workbench-preview {
+  min-width: 0;
 }
-.workbench > .workbench-preview {
-  grid-area: preview;
+.workbench-preview .sandbox-frame {
+  height: 680px;
 }
 .task-panel {
   border: 1.5px solid var(--border);
@@ -778,6 +778,12 @@ pre {
   max-height: calc(100vh - 24px);
   overflow: auto;
 }
+@media (max-width: 1000px) {
+  .task-panel {
+    position: static;
+    max-height: none;
+  }
+}
 .task-panel > summary {
   cursor: pointer;
   padding: 10px 14px;
@@ -787,6 +793,27 @@ pre {
   position: sticky;
   top: 0;
   z-index: 1;
+}
+.task-files {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--accent-soft);
+  font-size: 0.88rem;
+}
+.task-files ul {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+.task-files li {
+  margin: 3px 0;
+  overflow-wrap: anywhere;
+}
+.task-files a {
+  text-decoration: none;
+}
+.task-files p {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
 }
 .task-prose {
   border: 0;
@@ -800,148 +827,6 @@ pre {
 }
 .task-prose pre {
   font-size: 0.8rem;
-}
-@media (max-width: 1400px) {
-  .workbench {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas:
-      "task task"
-      "editor preview";
-  }
-  .task-panel {
-    position: static;
-    max-height: 340px;
-  }
-}
-@media (max-width: 1000px) {
-  .workbench {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "task" "editor" "preview";
-  }
-}
-.workbench-preview {
-  min-width: 0;
-}
-.workbench-preview .sandbox-frame {
-  height: 620px;
-}
-.editor {
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.editor-tabs {
-  display: flex;
-  overflow-x: auto;
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--border);
-}
-.editor-tab {
-  font: inherit;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  padding: 8px 14px;
-  border: 0;
-  border-right: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.editor-tab.is-active {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: inset 0 -2px 0 var(--accent);
-}
-.editor-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--js);
-}
-.editor-note {
-  margin: 0;
-  padding: 8px 14px;
-  font-size: 0.82rem;
-  background: var(--accent-soft);
-  color: var(--text);
-}
-.editor-body {
-  display: flex;
-  height: 560px;
-  position: relative;
-}
-.editor-gutter {
-  flex-shrink: 0;
-  overflow: hidden;
-  padding: 12px 8px 12px 12px;
-  text-align: right;
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 20px;
-  color: var(--muted);
-  opacity: 0.6;
-  user-select: none;
-  min-width: 3.2em;
-  background: var(--surface);
-}
-.editor-textarea {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  border: 0;
-  outline: none;
-  resize: none;
-  padding: 12px 14px 12px 6px;
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 20px;
-  tab-size: 2;
-  background: var(--surface);
-  color: var(--text);
-  white-space: pre;
-  overflow: auto;
-}
-.editor-textarea[readonly] {
-  color: var(--muted);
-}
-.editor-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 8px 12px;
-  border-top: 1px solid var(--border);
-  background: var(--surface-2);
-}
-.editor-status {
-  font-size: 0.82rem;
-  color: var(--ok);
-}
-.editor-status.is-dirty {
-  color: var(--js);
-}
-.editor-status.is-error {
-  color: var(--danger);
-}
-.editor-hint {
-  font-size: 0.78rem;
-}
-@media (max-width: 600px) {
-  .editor-hint {
-    display: none;
-  }
-  .editor-body {
-    height: 420px;
-  }
 }
 
 /* ---------- Wizualizacje zadań JavaScript / TypeScript ---------- */

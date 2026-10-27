@@ -39,8 +39,8 @@ Wcześniejsze, trudniejsze zadania (mid) są na gałęzi [`archiwum`](https://gi
 ## Jak ćwiczyć
 
 1. Na stronie głównej znajdź zadanie. Wyszukiwarka: `/` albo `Ctrl/Cmd + K`, strzałki ↑↓ i Enter. Szuka w obu językach, ignoruje polskie znaki. Filtry: kategoria, poziom, status.
-2. Przeczytaj treść i kliknij **Start: plac zabaw z timerem**.
-3. Koduj w **edytorze na placu zabaw** (lewa kolumna): `Ctrl + S` zapisuje plik na dysk, a podgląd po prawej (komponent, testy albo strona Next.js) odświeża się sam. Możesz też edytować te same pliki w VS Code. „Przywróć start” cofa plik do wersji startowej.
+2. Przeczytaj treść i kliknij **Start: podgląd na żywo i timer**.
+3. Koduj w **VS Code** (albo innym edytorze). Na placu zabaw po lewej masz treść zadania i listę plików (klik otwiera plik w VS Code), a po prawej podgląd na żywo: komponent, wizualizację z testami albo stronę Next.js. Po zapisie pliku (`Ctrl + S`) podgląd odświeża się sam.
 4. Po czasie porównaj z zakładką **Rozwiązanie** i przejdź przez pytania follow-up na głos.
 5. Oznacz zadanie jako zrobione (postęp zapisuje się w przeglądarce).
 
