@@ -336,6 +336,14 @@ pre {
   color: var(--react);
   border-color: currentColor;
 }
+.pill-javascript {
+  color: var(--js);
+  border-color: currentColor;
+}
+.pill-typescript {
+  color: var(--ts);
+  border-color: currentColor;
+}
 .pill-nextjs {
   background: var(--text);
   color: var(--bg);
@@ -686,4 +694,56 @@ pre {
 .solution-file {
   margin: 14px 0 4px;
   font-size: 0.85rem;
+}
+
+/* ---------- Testy (zadania JavaScript / TypeScript) ---------- */
+.test-summary {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.test-summary.is-ok {
+  color: var(--ok);
+}
+.test-bar {
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.test-bar span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  transition: width 0.2s;
+}
+.stage .test-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.test-icon {
+  font-family: var(--mono);
+  font-weight: 700;
+  width: 1.2em;
+  flex-shrink: 0;
+}
+.test-list .is-ok .test-icon {
+  color: var(--ok);
+}
+.test-list .is-fail .test-icon {
+  color: var(--danger);
+}
+.test-list .is-todo .test-icon {
+  color: var(--muted);
+}
+.test-message {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--danger);
+}
+.test-list .is-todo .test-message {
+  color: var(--muted);
 }

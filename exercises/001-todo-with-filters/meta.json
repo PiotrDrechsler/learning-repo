@@ -1,0 +1,23 @@
+{
+  "title": {
+    "pl": "Lista zadań z filtrami i localStorage",
+    "en": "Todo list with filters and localStorage"
+  },
+  "summary": {
+    "pl": "Klasyczne todo, ale porządnie: niemutowalne aktualizacje, filtry jako stan pochodny, edycja w miejscu i zapis w localStorage.",
+    "en": "A classic todo done properly: immutable updates, filters as derived state, inline editing and persistence in localStorage."
+  },
+  "category": "react",
+  "level": "junior",
+  "lang": "js",
+  "minutes": 25,
+  "tags": [
+    "useState",
+    "useReducer",
+    "list",
+    "form",
+    "localStorage",
+    "derived-state"
+  ],
+  "added": "2026-10-27"
+}

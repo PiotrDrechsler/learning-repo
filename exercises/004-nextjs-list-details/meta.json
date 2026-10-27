@@ -1,0 +1,32 @@
+{
+  "title": {
+    "pl": "Lista i szczegóły produktu w App Routerze",
+    "en": "Product list and details in the App Router"
+  },
+  "summary": {
+    "pl": "Pierwsze trasy w Next.js: Server Component z danymi, dynamiczny segment [id], wspólny layout, Link, loading.tsx i strona 404.",
+    "en": "Your first Next.js routes: a Server Component with data, a dynamic [id] segment, a shared layout, Link, loading.tsx and a 404 page."
+  },
+  "category": "nextjs",
+  "level": "junior",
+  "lang": "ts",
+  "minutes": 30,
+  "tags": ["app-router", "server-components", "dynamic-routes", "layout", "loading-tsx", "not-found"],
+  "added": "2026-10-27",
+  "route": "/sandbox/004-task",
+  "solutionRoute": "/sandbox/004-solution",
+  "files": [
+    "app/sandbox/004-task/page.tsx",
+    "app/sandbox/004-task/layout.tsx (nowy / new)",
+    "app/sandbox/004-task/[id]/page.tsx (nowy / new)",
+    "app/sandbox/004-task/[id]/loading.tsx (nowy / new)",
+    "app/sandbox/004-task/[id]/not-found.tsx (nowy / new)"
+  ],
+  "solutionFiles": [
+    "app/sandbox/004-solution/layout.tsx",
+    "app/sandbox/004-solution/page.tsx",
+    "app/sandbox/004-solution/[id]/page.tsx",
+    "app/sandbox/004-solution/[id]/loading.tsx",
+    "app/sandbox/004-solution/[id]/not-found.tsx"
+  ]
+}

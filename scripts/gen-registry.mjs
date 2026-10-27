@@ -1,4 +1,7 @@
-// Generuje exercises/_registry.generated.ts: mapę slug -> { Exercise, Solution }.
+// Generuje exercises/_registry.generated.ts:
+// - components: zadania React (Exercise + solution jako komponenty),
+// - suites: zadania JavaScript/TypeScript (moduł z funkcjami, rozwiązanie i testy).
+// Zadania Next.js mają własne trasy w app/sandbox i nie trafiają do rejestru.
 // Uruchamia się samo przed `npm run dev` i `npm run build`.
 import fs from "node:fs";
 import path from "node:path";
@@ -8,7 +11,7 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const dir = path.join(root, "exercises");
 const FOLDER_RE = /^\d{3}-[a-z0-9-]+$/;
 
-const findBase = (folder, base) =>
+const has = (folder, base) =>
   [".tsx", ".jsx", ".ts", ".js"].some((ext) => fs.existsSync(path.join(dir, folder, base + ext)));
 
 const folders = fs
@@ -18,31 +21,52 @@ const folders = fs
   .sort();
 
 const imports = [];
-const entries = [];
+const components = [];
+const suites = [];
+
 for (const folder of folders) {
   const n = folder.slice(0, 3);
-  // Zadania Next.js mają własne trasy w app/sandbox, nie trafiają do rejestru komponentów.
   const meta = JSON.parse(fs.readFileSync(path.join(dir, folder, "meta.json"), "utf8"));
-  if (meta.stack === "nextjs") continue;
-  if (!findBase(folder, "Exercise") || !findBase(folder, "solution")) {
-    console.warn(`⚠ Pomijam ${folder}: brak pliku Exercise.* albo solution.*`);
+  const category = meta.category ?? "react";
+
+  if (category === "nextjs") continue;
+
+  if (category === "javascript" || category === "typescript") {
+    if (!has(folder, "exercise") || !has(folder, "solution") || !has(folder, "tests")) {
+      console.warn(`⚠ Pomijam ${folder}: brak exercise.*, solution.* albo tests.*`);
+      continue;
+    }
+    imports.push(`import * as Exercise${n} from "./${folder}/exercise";`);
+    imports.push(`import * as Solution${n} from "./${folder}/solution";`);
+    imports.push(`import Tests${n} from "./${folder}/tests";`);
+    suites.push(`  "${folder}": { exercise: Exercise${n}, solution: Solution${n}, tests: Tests${n} },`);
+    continue;
+  }
+
+  if (!has(folder, "Exercise") || !has(folder, "solution")) {
+    console.warn(`⚠ Pomijam ${folder}: brak Exercise.* albo solution.*`);
     continue;
   }
   imports.push(`import Exercise${n} from "./${folder}/Exercise";`);
   imports.push(`import Solution${n} from "./${folder}/solution";`);
-  entries.push(`  "${folder}": { Exercise: Exercise${n}, Solution: Solution${n} },`);
+  components.push(`  "${folder}": { Exercise: Exercise${n}, Solution: Solution${n} },`);
 }
 
 const out = `// AUTO-GENERATED przez scripts/gen-registry.mjs — nie edytuj ręcznie.
 import type { ComponentType } from "react";
+import type { TestCase } from "@/lib/testing";
 ${imports.join("\n")}
 
-export const registry: Record<string, { Exercise: ComponentType; Solution: ComponentType }> = {
-${entries.join("\n")}
+export const components: Record<string, { Exercise: ComponentType; Solution: ComponentType }> = {
+${components.join("\n")}
+};
+
+export const suites: Record<string, { exercise: unknown; solution: unknown; tests: TestCase[] }> = {
+${suites.join("\n")}
 };
 `;
 
 const target = path.join(dir, "_registry.generated.ts");
 const previous = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
 if (previous !== out) fs.writeFileSync(target, out);
-console.log(`✓ Rejestr ćwiczeń: ${entries.length}`);
+console.log(`✓ Rejestr: ${components.length} komponentów, ${suites.length} zestawów testów`);

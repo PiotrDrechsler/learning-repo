@@ -5,7 +5,7 @@ import DoneToggle from "@/components/DoneToggle";
 import { getExercise, getNeighbours } from "@/lib/exercises";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale.server";
-import { STACK_LABELS } from "@/lib/stack";
+import { CATEGORY_LABELS } from "@/lib/category";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -36,8 +36,10 @@ export default async function ExercisePage({ params }: Props) {
         <div>
           <h1>{exercise.title}</h1>
           <div className="exercise-tags">
-            <span className={`pill pill-${exercise.stack}`}>{STACK_LABELS[exercise.stack]}</span>
-            <span className={`pill pill-${exercise.lang}`}>{exercise.lang.toUpperCase()}</span>
+            <span className={`pill pill-${exercise.category}`}>{CATEGORY_LABELS[exercise.category]}</span>
+            {exercise.kind !== "functions" && (
+              <span className={`pill pill-${exercise.lang}`}>{exercise.lang.toUpperCase()}</span>
+            )}
             <span className="pill">{exercise.level}</span>
             <span className="pill">⏱ {t.exercise.minutes(exercise.minutes)}</span>
             {exercise.tags.map((tag) => (
@@ -56,7 +58,7 @@ export default async function ExercisePage({ params }: Props) {
         <DoneToggle slug={exercise.slug} />
       </div>
 
-      {exercise.stack === "nextjs" ? (
+      {exercise.kind === "route" ? (
         <div className="file-hint">
           <p>{t.exercise.filesHint}</p>
           <ul>
@@ -77,6 +79,18 @@ export default async function ExercisePage({ params }: Props) {
         <p className="file-hint">
           {t.exercise.fileHintBefore} <code>{exercise.files[0]}</code>. {t.exercise.fileHintMiddle}{" "}
           <code>git restore {exercise.files[0]}</code>
+          {exercise.kind === "functions" && (
+            <>
+              <br />
+              {t.exercise.testsHint}
+              {exercise.category === "typescript" && (
+                <>
+                  {" "}
+                  {t.tests.typeHint} <code>npm run typecheck:tasks</code>.
+                </>
+              )}
+            </>
+          )}
         </p>
       )}
 

@@ -1,0 +1,16 @@
+{
+  "title": {
+    "pl": "Typy dla zamówień w sklepie",
+    "en": "Types for shop orders"
+  },
+  "summary": {
+    "pl": "Zamień any na prawdziwe typy: unia statusów, interfejs zamówienia, pole opcjonalne, generyk i wyczerpujący switch. Sprawdzane testami i kompilatorem.",
+    "en": "Replace any with real types: a status union, an order interface, an optional field, a generic and an exhaustive switch. Checked by tests and the compiler."
+  },
+  "category": "typescript",
+  "level": "junior",
+  "lang": "ts",
+  "minutes": 25,
+  "tags": ["union-types", "interface", "generics", "never", "optional", "readonly"],
+  "added": "2026-10-27"
+}

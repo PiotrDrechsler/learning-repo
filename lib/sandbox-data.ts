@@ -14,14 +14,6 @@ export interface Product {
   description: string;
 }
 
-export interface Review {
-  id: number;
-  productId: number;
-  author: string;
-  rating: number;
-  text: string;
-}
-
 export const CATEGORIES: Category[] = ["keyboards", "mice", "monitors", "headphones", "accessories"];
 
 const BRANDS = ["Nova", "Pixel", "Orbit", "Zenith", "Atlas", "Lumen"];
@@ -47,36 +39,13 @@ export const PRODUCTS: Product[] = Array.from({ length: 48 }, (_, i) => {
   };
 });
 
-const AUTHORS = ["Ania", "Bartek", "Celina", "Darek", "Ewa", "Filip"];
-
-/** Jeden produkt. Brak = undefined. Opóźnienie ~300 ms. */
+/** Jeden produkt. Brak = undefined. Opóźnienie ~600 ms, żeby było widać loading.tsx. */
 export async function getProduct(id: number): Promise<Product | undefined> {
-  await randomDelay(250, 350);
+  await randomDelay(500, 700);
   return PRODUCTS.find((p) => p.id === id);
 }
 
-/** Opinie: WOLNE (~1,5 s). Dla produktu 13 zawsze rzucają błąd, żeby przećwiczyć error.tsx. */
-export async function getReviews(productId: number): Promise<Review[]> {
-  await randomDelay(1400, 1600);
-  if (productId === 13) throw new Error("Serwis opinii nie odpowiada (produkt 13 zawsze się wywraca).");
-  return Array.from({ length: 2 + (productId % 3) }, (_, i) => ({
-    id: productId * 10 + i,
-    productId,
-    author: AUTHORS[(productId + i) % AUTHORS.length],
-    rating: 3 + ((productId + i) % 3),
-    text: `Opinia ${i + 1}: działa jak należy, polecam do codziennej pracy.`,
-  }));
-}
-
-/** Rekomendacje: BARDZO WOLNE (~2,5 s). */
-export async function getRecommendations(productId: number): Promise<Product[]> {
-  await randomDelay(2400, 2600);
-  const product = PRODUCTS.find((p) => p.id === productId);
-  if (!product) return [];
-  return PRODUCTS.filter((p) => p.category === product.category && p.id !== productId).slice(0, 4);
-}
-
-// ---------- Katalog (zadanie 010) ----------
+// ---------- Katalog ----------
 
 export const SORTS = ["relevance", "price-asc", "price-desc", "rating"] as const;
 export type Sort = (typeof SORTS)[number];
@@ -115,39 +84,4 @@ export async function listProducts({ q = "", category, sort = "relevance", page 
     page: safePage,
     totalPages,
   };
-}
-
-// ---------- Komentarze (zadanie 009) ----------
-
-export interface Comment {
-  id: number;
-  author: string;
-  text: string;
-  createdAt: string;
-}
-
-// Dane w pamięci procesu: znikają po restarcie serwera, i dobrze.
-const comments: Comment[] = [
-  { id: 1, author: "Ania", text: "Server Actions to najprzyjemniejsza część App Routera.", createdAt: "2026-10-20T10:00:00.000Z" },
-  { id: 2, author: "Bartek", text: "A pamiętasz o walidacji po stronie serwera?", createdAt: "2026-10-21T12:30:00.000Z" },
-];
-let nextCommentId = 3;
-
-export async function getComments(): Promise<Comment[]> {
-  await randomDelay(150, 250);
-  return [...comments].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-}
-
-/** Zapis jest wolny (~800 ms), żeby było widać stan "wysyłanie". */
-export async function addComment(author: string, text: string): Promise<Comment> {
-  await randomDelay(700, 900);
-  const comment = { id: nextCommentId++, author, text, createdAt: new Date().toISOString() };
-  comments.push(comment);
-  return comment;
-}
-
-export async function deleteComment(id: number): Promise<void> {
-  await randomDelay(300, 500);
-  const index = comments.findIndex((c) => c.id === id);
-  if (index !== -1) comments.splice(index, 1);
 }

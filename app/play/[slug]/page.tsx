@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Playground, { FramePlayground } from "@/components/Playground";
+import Playground, { FramePlayground, TestPlayground } from "@/components/Playground";
 import { getExercise } from "@/lib/exercises";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale.server";
@@ -36,11 +36,19 @@ export default async function PlayPage({ params, searchParams }: Props) {
           {t.play.solution}
         </Link>
       </div>
-      {exercise.stack === "nextjs" ? (
+      {exercise.kind === "route" ? (
         <FramePlayground
           slug={slug}
           minutes={exercise.minutes}
           src={(showSolution ? exercise.solutionRoute : exercise.route) ?? "/"}
+        />
+      ) : exercise.kind === "functions" ? (
+        <TestPlayground
+          slug={slug}
+          minutes={exercise.minutes}
+          mode={showSolution ? "solution" : "exercise"}
+          file={showSolution ? exercise.solution[0].path : exercise.files[0]}
+          showTypeHint={exercise.category === "typescript"}
         />
       ) : (
         <Playground

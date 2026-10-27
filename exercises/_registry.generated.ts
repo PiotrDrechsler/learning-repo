@@ -1,26 +1,20 @@
 // AUTO-GENERATED przez scripts/gen-registry.mjs — nie edytuj ręcznie.
 import type { ComponentType } from "react";
-import Exercise001 from "./001-debounced-user-search/Exercise";
-import Solution001 from "./001-debounced-user-search/solution";
-import Exercise002 from "./002-todo-with-filters/Exercise";
-import Solution002 from "./002-todo-with-filters/solution";
-import Exercise003 from "./003-use-fetch-hook/Exercise";
-import Solution003 from "./003-use-fetch-hook/solution";
-import Exercise004 from "./004-accessible-modal/Exercise";
-import Solution004 from "./004-accessible-modal/solution";
-import Exercise005 from "./005-infinite-scroll/Exercise";
-import Solution005 from "./005-infinite-scroll/solution";
-import Exercise006 from "./006-star-rating/Exercise";
-import Solution006 from "./006-star-rating/solution";
-import Exercise007 from "./007-stopwatch-with-laps/Exercise";
-import Solution007 from "./007-stopwatch-with-laps/solution";
+import type { TestCase } from "@/lib/testing";
+import Exercise001 from "./001-todo-with-filters/Exercise";
+import Solution001 from "./001-todo-with-filters/solution";
+import * as Exercise002 from "./002-array-methods-cart/exercise";
+import * as Solution002 from "./002-array-methods-cart/solution";
+import Tests002 from "./002-array-methods-cart/tests";
+import * as Exercise003 from "./003-typing-orders/exercise";
+import * as Solution003 from "./003-typing-orders/solution";
+import Tests003 from "./003-typing-orders/tests";
 
-export const registry: Record<string, { Exercise: ComponentType; Solution: ComponentType }> = {
-  "001-debounced-user-search": { Exercise: Exercise001, Solution: Solution001 },
-  "002-todo-with-filters": { Exercise: Exercise002, Solution: Solution002 },
-  "003-use-fetch-hook": { Exercise: Exercise003, Solution: Solution003 },
-  "004-accessible-modal": { Exercise: Exercise004, Solution: Solution004 },
-  "005-infinite-scroll": { Exercise: Exercise005, Solution: Solution005 },
-  "006-star-rating": { Exercise: Exercise006, Solution: Solution006 },
-  "007-stopwatch-with-laps": { Exercise: Exercise007, Solution: Solution007 },
+export const components: Record<string, { Exercise: ComponentType; Solution: ComponentType }> = {
+  "001-todo-with-filters": { Exercise: Exercise001, Solution: Solution001 },
+};
+
+export const suites: Record<string, { exercise: unknown; solution: unknown; tests: TestCase[] }> = {
+  "002-array-methods-cart": { exercise: Exercise002, solution: Solution002, tests: Tests002 },
+  "003-typing-orders": { exercise: Exercise003, solution: Solution003, tests: Tests003 },
 };

@@ -1,0 +1,16 @@
+{
+  "title": {
+    "pl": "Koszyk zakupów: metody tablic",
+    "en": "Shopping cart: array methods"
+  },
+  "summary": {
+    "pl": "Siedem małych funkcji na danych koszyka: map, filter, reduce, Set, grupowanie i zmiana danych bez mutacji. Sprawdzane testami.",
+    "en": "Seven small functions on cart data: map, filter, reduce, Set, grouping and changing data without mutation. Checked by tests."
+  },
+  "category": "javascript",
+  "level": "junior",
+  "lang": "js",
+  "minutes": 25,
+  "tags": ["map", "filter", "reduce", "immutability", "set", "array-methods"],
+  "added": "2026-10-27"
+}

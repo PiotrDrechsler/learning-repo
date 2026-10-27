@@ -1,3 +1,4 @@
+import { CATEGORY_SEARCH_WORDS } from "./category";
 import type { ExerciseMeta } from "./exercises";
 
 /** Małe litery, bez polskich znaków: "Łódź" -> "lodz". */
@@ -27,8 +28,8 @@ export function searchExercises(exercises: ExerciseMeta[], query: string): Searc
     const title = normalize(exercise.title);
     const tags = exercise.tags.map(normalize);
     const summary = normalize(exercise.searchText); // tytuły i opisy w obu językach
-    const stackWords = exercise.stack === "nextjs" ? "nextjs next.js next app-router" : "react";
-    const extra = normalize(`${exercise.number} ${exercise.level} ${exercise.lang} ${stackWords} ${exercise.slug}`);
+    const words = CATEGORY_SEARCH_WORDS[exercise.category];
+    const extra = normalize(`${exercise.number} ${exercise.level} ${exercise.lang} ${words} ${exercise.slug}`);
 
     let score = 0;
     let allMatched = true;

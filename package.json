@@ -11,7 +11,8 @@
     "prebuild": "npm run registry",
     "build": "next build",
     "start": "next start",
-    "typecheck": "npm run registry && tsc --noEmit"
+    "typecheck": "npm run registry && tsc --noEmit",
+    "typecheck:tasks": "tsc --noEmit -p tsconfig.check.json"
   },
   "dependencies": {
     "marked": "^15.0.0",

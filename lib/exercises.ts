@@ -3,16 +3,28 @@ import path from "node:path";
 import { marked } from "marked";
 import { DEFAULT_LOCALE, LOCALES, pick, type Locale, type Localized } from "./i18n";
 
-export type Level = "junior+" | "mid" | "mid+";
+export type Level = "junior" | "junior+" | "mid" | "mid+";
 export type Lang = "ts" | "js";
-/** react = komponent renderowany na placu zabaw; nextjs = własne trasy w app/sandbox. */
-export type Stack = "react" | "nextjs";
+export type ExerciseCategory = "react" | "javascript" | "typescript" | "nextjs";
+/**
+ * Jak zadanie działa na placu zabaw (wynika z kategorii):
+ * component = komponent React renderowany na scenie,
+ * functions = czyste funkcje sprawdzane testami,
+ * route = prawdziwa trasa Next.js z app/sandbox w ramce.
+ */
+export type ExerciseKind = "component" | "functions" | "route";
+
+export function kindOf(category: ExerciseCategory): ExerciseKind {
+  if (category === "nextjs") return "route";
+  if (category === "javascript" || category === "typescript") return "functions";
+  return "component";
+}
 
 /** Kształt meta.json. Tytuł i opis mogą być zwykłym tekstem albo obiektem { pl, en }. */
 interface RawMeta {
   title: Localized | string;
   summary: Localized | string;
-  stack?: Stack;
+  category?: ExerciseCategory;
   level: Level;
   lang: Lang;
   minutes: number;
@@ -35,7 +47,8 @@ export interface ExerciseMeta {
   summary: string;
   /** Tytuły i opisy we wszystkich językach: wyszukiwarka znajdzie zadanie po polsku i po angielsku. */
   searchText: string;
-  stack: Stack;
+  category: ExerciseCategory;
+  kind: ExerciseKind;
   level: Level;
   lang: Lang;
   /** Limit czasu jak na rozmowie, w minutach. */
@@ -83,7 +96,8 @@ function toMeta(slug: string, raw: RawMeta, locale: Locale): ExerciseMeta {
     title: pick(raw.title, locale),
     summary: pick(raw.summary, locale),
     searchText: LOCALES.map((l) => `${pick(raw.title, l)} ${pick(raw.summary, l)}`).join(" "),
-    stack: raw.stack ?? "react",
+    category: raw.category ?? "react",
+    kind: kindOf(raw.category ?? "react"),
     level: raw.level,
     lang: raw.lang,
     minutes: raw.minutes,
@@ -123,8 +137,10 @@ export function getExercise(slug: string, locale: Locale): ExerciseDetail | null
   const raw = readRaw(slug);
   const meta = toMeta(slug, raw, locale);
 
-  const files = meta.stack === "nextjs" ? (raw.files ?? []) : [findFile(slug, "Exercise")];
-  const solutionPaths = meta.stack === "nextjs" ? (raw.solutionFiles ?? []) : [findFile(slug, "solution")];
+  // component: Exercise.tsx + solution.tsx; functions: exercise.ts + solution.ts + tests.ts; route: pliki z meta.json
+  const files =
+    meta.kind === "route" ? (raw.files ?? []) : [findFile(slug, meta.kind === "functions" ? "exercise" : "Exercise")];
+  const solutionPaths = meta.kind === "route" ? (raw.solutionFiles ?? []) : [findFile(slug, "solution")];
 
   return {
     ...meta,

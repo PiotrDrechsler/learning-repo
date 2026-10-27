@@ -1,0 +1,11 @@
+// Sprawdzanie typów w zadaniach TypeScript (pliki *.check.ts): npm run typecheck:tasks
+// Główny tsconfig je pomija, żeby niedokończone zadanie nie blokowało `next build`.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "noEmit": true
+  },
+  "include": ["exercises/**/*.ts"],
+  "exclude": ["node_modules"]
+}

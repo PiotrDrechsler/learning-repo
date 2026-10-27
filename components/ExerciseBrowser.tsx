@@ -3,17 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import type { ExerciseMeta, Lang, Level, Stack } from "@/lib/exercises";
+import type { ExerciseCategory, ExerciseMeta, Level } from "@/lib/exercises";
 import { searchExercises } from "@/lib/search";
-import { STACK_LABELS } from "@/lib/stack";
+import { CATEGORIES, CATEGORY_LABELS } from "@/lib/category";
 import { useProgress } from "@/lib/useProgress";
 import { useI18n } from "./I18nProvider";
 
 type Status = "all" | "todo" | "done";
 
-const LEVELS: Level[] = ["junior+", "mid", "mid+"];
-const LANGS: Lang[] = ["ts", "js"];
-const STACKS: Stack[] = ["react", "nextjs"];
+const LEVELS: Level[] = ["junior", "junior+", "mid", "mid+"];
 
 export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta[] }) {
   const router = useRouter();
@@ -23,8 +21,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
   const b = t.browser;
 
   const [query, setQuery] = useState("");
-  const [stack, setStack] = useState<Stack | "all">("all");
-  const [lang, setLang] = useState<Lang | "all">("all");
+  const [category, setCategory] = useState<ExerciseCategory | "all">("all");
   const [level, setLevel] = useState<Level | "all">("all");
   const [status, setStatus] = useState<Status>("all");
   const [active, setActive] = useState(0);
@@ -33,13 +30,12 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
   const results = useMemo(() => {
     return searchExercises(exercises, deferredQuery)
       .map((h) => h.exercise)
-      .filter((e) => stack === "all" || e.stack === stack)
-      .filter((e) => lang === "all" || e.lang === lang)
+      .filter((e) => category === "all" || e.category === category)
       .filter((e) => level === "all" || e.level === level)
       .filter((e) => status === "all" || (status === "done" ? isDone(e.slug) : !isDone(e.slug)));
-  }, [exercises, deferredQuery, stack, lang, level, status, isDone]);
+  }, [exercises, deferredQuery, category, level, status, isDone]);
 
-  useEffect(() => setActive(0), [deferredQuery, stack, lang, level, status]);
+  useEffect(() => setActive(0), [deferredQuery, category, level, status]);
 
   // "/" albo Ctrl/Cmd+K ustawia kursor w wyszukiwarce
   useEffect(() => {
@@ -100,14 +96,13 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
 
       <div className="filters">
         <FilterGroup
-          label={b.stack}
+          label={b.category}
           allLabel={b.all}
-          value={stack}
-          options={["all", ...STACKS] as (Stack | "all")[]}
-          labels={STACK_LABELS}
-          onChange={setStack}
+          value={category}
+          options={["all", ...CATEGORIES] as (ExerciseCategory | "all")[]}
+          labels={CATEGORY_LABELS}
+          onChange={setCategory}
         />
-        <FilterGroup label={b.lang} allLabel={b.all} value={lang} options={["all", ...LANGS] as (Lang | "all")[]} onChange={setLang} />
         <FilterGroup label={b.level} allLabel={b.all} value={level} options={["all", ...LEVELS] as (Level | "all")[]} onChange={setLevel} />
         <FilterGroup
           label={b.status}
@@ -148,8 +143,8 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
                 </span>
                 <span className="exercise-summary">{e.summary}</span>
                 <span className="exercise-tags">
-                  <span className={`pill pill-${e.stack}`}>{STACK_LABELS[e.stack]}</span>
-                  <span className={`pill pill-${e.lang}`}>{e.lang.toUpperCase()}</span>
+                  <span className={`pill pill-${e.category}`}>{CATEGORY_LABELS[e.category]}</span>
+                  {e.kind !== "functions" && <span className={`pill pill-${e.lang}`}>{e.lang.toUpperCase()}</span>}
                   <span className="pill">{e.level}</span>
                   <span className="pill">{e.minutes} min</span>
                   {e.tags.map((t) => (
@@ -172,8 +167,7 @@ export default function ExerciseBrowser({ exercises }: { exercises: ExerciseMeta
             className="link-button"
             onClick={() => {
               setQuery("");
-              setStack("all");
-              setLang("all");
+              setCategory("all");
               setLevel("all");
               setStatus("all");
             }}
